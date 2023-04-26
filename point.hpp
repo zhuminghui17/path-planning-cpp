@@ -24,7 +24,7 @@ class Node: public Point {
     public:
         Node(double a, double b, size_t id);
         size_t getNodeId();
-};  
+};
 
 
 

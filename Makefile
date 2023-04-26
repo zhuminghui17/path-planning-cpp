@@ -1,17 +1,20 @@
-CC=g++
-CFLAGS=-c -Wall
-LDFLAGS=
-SOURCES=point.cpp
-OBJECTS=$(SOURCES:.cpp=.o)
-EXECUTABLE=program
+CPPFLAGS=-Werror -Wall -pedantic -std=gnu++98 -ggdb3
+PROGS=path-step1 #path-step2 path-step3 path-step4
+all: $(PROGS)
 
-all: $(SOURCES) $(EXECUTABLE)
+path-step1: path-step1.o point.o graph.o
+	g++ -o $@ $^
+# path-step2: test-step2.o myode.o euler.o
+# 	g++ -o $@ $^
+# num_sim: num_sim.o myode.o euler.o
+# 	g++ -o $@ $^
 
-$(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+%.o: %.cpp
+	g++ $(CPPFLAGS) -c $<
 
-.cpp.o:
-	$(CC) $(CFLAGS) $< -o $@
-
+.PHONY: clean
 clean:
-	rm -f $(OBJECTS) $(EXECUTABLE)
+	rm -f *~ *.o $(PROGS)
+
+point.o: point.hpp
+graph.o: graph.hpp
