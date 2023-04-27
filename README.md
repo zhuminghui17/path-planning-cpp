@@ -14,3 +14,11 @@ Due: May 2 12pm 2023
 - [x] Graph Class
 - [x] read file and match nodes and edges
 - [x] ID starts from zero
+- [ ] node type is unsigned integer. ?
+- [x] Print it
+- [ ] test cases and invalid stuffs
+
+
+### Step 2
+
+- [ ] Dijkstra's algorithm
