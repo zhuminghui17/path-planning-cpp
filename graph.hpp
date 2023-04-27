@@ -24,6 +24,6 @@ class Graph {
         Node getNode(size_t nodeId);
         size_t getAdjSize();
         std::map<size_t, double> getAdj(size_t nodeId);
-        double dijkstra(size_t startNodeId, size_t endNodeId);
+        void dijkstra(size_t startNodeId, size_t endNodeId);
 
 };

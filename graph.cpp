@@ -125,7 +125,7 @@ std::ostream & operator<<(std::ostream & os, Graph & rhs) {
   return os;
 }
 
-double Graph::dijkstra(size_t startNodeId, size_t endNodeId) {
+void Graph::dijkstra(size_t startNodeId, size_t endNodeId) {
     // get the adj of startNodeId
     std::map<size_t, double> adj = getAdj(startNodeId);
     // initialize the distance vector for all nodes to be infinity
@@ -178,12 +178,12 @@ double Graph::dijkstra(size_t startNodeId, size_t endNodeId) {
     for (size_t i = 0; i < path.size(); i++) {
         std::cout << path[i];
         if (i < path.size() - 1) {
-            std::cout << " -> ";
+            std::cout << " ";
         }
     }
-    std::cout << std::endl;
+    std::cout << " : " << dist[endNodeId] << std::endl;
 
-    return dist[endNodeId];
+    // return dist[endNodeId];
 }
 
 

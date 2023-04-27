@@ -95,8 +95,8 @@ int main(int argc, char **argv)
     std::string startNodeId = argv[2];
     std::string endNodeId = argv[3];
 
-    double path = graph.dijkstra(std::stoi(startNodeId), std::stoi(endNodeId));
-    std::cout << path << std::endl;
+    graph.dijkstra(std::stoi(startNodeId), std::stoi(endNodeId));
+    // std::cout << path << std::endl;
     // std::cout << "The shortest path from " << startNodeId << " to " << endNodeId << " is " << path << std::endl;
 
     input_file.close();
