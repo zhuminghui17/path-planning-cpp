@@ -2,7 +2,7 @@ CPPFLAGS=-Werror -Wall -pedantic -std=gnu++98 -ggdb3
 PROGS=path-step1 #path-step2 path-step3 path-step4
 all: $(PROGS)
 
-path-step1: path-step1.o point.o graph.o
+path-step1: path-step1.o node.o graph.o
 	g++ -o $@ $^
 # path-step2: test-step2.o myode.o euler.o
 # 	g++ -o $@ $^
@@ -16,5 +16,5 @@ path-step1: path-step1.o point.o graph.o
 clean:
 	rm -f *~ *.o $(PROGS)
 
-point.o: point.hpp
+node.o: node.hpp
 graph.o: graph.hpp

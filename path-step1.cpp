@@ -1,4 +1,5 @@
-#include "point.hpp"
+#include "node.hpp"
+#include "graph.hpp"
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -13,7 +14,7 @@ public:
 };
 // read the nodes in the file
 
-void readNodesFunc(std::string line, std::vector<Node> nodes)
+void readNodesFunc(std::string line, Graph &graph)
 {
     // nodeid, x, y
     size_t firstSpacePos = line.find(" ");
@@ -22,22 +23,20 @@ void readNodesFunc(std::string line, std::vector<Node> nodes)
     std::string x = line.substr(firstSpacePos + 1, secondSpacePos - firstSpacePos - 1);
     std::string y = line.substr(secondSpacePos + 1, line.length() - secondSpacePos - 1);
 
-    std::cout << nodeId << " " << x << " " << y << std::endl;
-
     Node node = Node(std::stod(x), std::stod(y), std::stoi(nodeId));
-    nodes.push_back(node);
+    graph.addNode(node);
 }
 
-void readEdgesFunc(std::string line, std::vector<std::pair<size_t, size_t> > edges)
+void readEdgesFunc(std::string line, Graph  & graph)
 {
     // nodeid, x, y
     size_t firstSpacePos = line.find(" ");
     std::string firstNodeId = line.substr(0, firstSpacePos);
     std::string secondNodeId = line.substr(firstSpacePos + 1, line.length() - firstSpacePos - 1);
-    std::pair<size_t, size_t> edge = std::make_pair(std::stoi(firstNodeId), std::stoi(secondNodeId));
-    edges.push_back(edge);
+    
+    // std::stoi(firstNodeId), std::stoi(secondNodeId));
+    graph.addEdge(std::stoi(firstNodeId), std::stoi(secondNodeId));
 
-    std::cout << firstNodeId << " " << secondNodeId << std::endl;
 }
 
 int main(int argc, char **argv)
@@ -54,13 +53,12 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    Graph graph = Graph();
+
     std::string line;
 
     bool readNodes = false;
     bool readEdges = false;
-
-    std::vector<Node> nodes;
-    std::vector<std::pair<size_t, size_t> > edges;
 
     while (std::getline(input_file, line))
     {
@@ -76,22 +74,23 @@ int main(int argc, char **argv)
 
         if (readNodes == true && line.find("$edges") == line.npos)
         {
-            readNodesFunc(line, nodes);
+            readNodesFunc(line, graph);
         }
 
         if (readEdges == false && line.find("$edges") != line.npos)
         {
             readNodes = false;
             readEdges = true;
+            graph.initAdj();
             continue;
         }
 
         if (readEdges == true && line.find("$edges") == line.npos)
         {
-            readEdgesFunc(line, edges);
+            readEdgesFunc(line, graph);
         }
     }
-
+    std::cout << graph << std::endl;
     input_file.close();
 
     return 0;

@@ -1,7 +1,7 @@
 #include <vector>
 #include <cstdlib>
-#include "point.hpp"
-# include <map>
+#include "node.hpp"
+#include <map>
 
 class Graph {
     /*
@@ -11,13 +11,18 @@ class Graph {
     */
     private:
         std::vector<Node> nodes;
-        std::map<size_t, std::vector<size_t> > adj;
+        std::vector<std::map<size_t, double > > adj;
     public:
-        Graph(): nodes(std::vector<Node>()), adj(std::map<size_t, std::vector<size_t> >()) {};
+        Graph();
         void addNode(Node node);
         void addEdge(size_t firstNodeId, size_t secondNodeId);
         size_t getNumNodes();
         size_t getNumEdges();
         std::vector<Node> getNodes();
+        void initAdj();
+        friend std::ostream & operator<<(std::ostream & os, Graph & rhs);
+        Node getNode(size_t nodeId);
+        size_t getAdjSize();
+        std::map<size_t, double> getAdj(size_t nodeId);
 
 };

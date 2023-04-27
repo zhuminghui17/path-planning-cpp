@@ -18,3 +18,10 @@ double Node::getY() {
 double Node::distanceFrom(const Node & rhs) {
     return sqrt(pow(x - rhs.x, 2) + pow(y - rhs.y, 2));
 }
+
+std::ostream & operator<<(std::ostream & os, Node & rhs) {
+    os << "Node " << rhs.getNodeId() << ": (" << rhs.getX() << ", " << rhs.getY()<< ")";
+    return os;
+}
+
+
