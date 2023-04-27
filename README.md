@@ -10,9 +10,7 @@ Due: May 2 12pm 2023
 
 ### Step 1
 
-- [x] Point Class
-    - [x] distanceFrom()
-- [ ] Graph Class
-    - [x] addNode
-    - [ ] addEdge
-    - [ ] operator<<.
+- [x] Node Class
+- [x] Graph Class
+- [x] read file and match nodes and edges
+- [x] ID starts from zero
