@@ -126,47 +126,29 @@ std::ostream & operator<<(std::ostream & os, Graph & rhs) {
 }
 
 double Graph::dijkstra(size_t startNodeId, size_t endNodeId) {
-    std::cout << "start dijkstra" << std::endl;
     // get the adj of startNodeId
     std::map<size_t, double> adj = getAdj(startNodeId);
-    std::cout << "get adj" << std::endl;
     // initialize the distance vector for all nodes to be infinity
-    std::vector<double> dist = std::vector<double>();
-    for (size_t i = 0; i < this->getNumNodes(); i++) {
-        dist.push_back(100);
-    }
-
+    std::vector<double> dist = std::vector<double>(this->getNumNodes(), std::numeric_limits<double>::infinity());
     // set the distance of startNodeId to be 0
     dist[startNodeId] = 0;
 
-    for (size_t i = 0; i < dist.size(); i++) {
-        std::cout << dist[i] << " ";
-    }
     // initialize visited and unvisited
-    std::vector<size_t> visited = std::vector<size_t>();
-    std::vector<size_t> unvisited = std::vector<size_t>();
+    std::vector<size_t> visited;
+    std::vector<bool> unvisited = std::vector<bool>(this->getNumNodes(), true);
 
-    // initialize unvisited
-    for (size_t i = 0; i < this->getNumNodes(); i++) {
-        unvisited.push_back(i);
-    }
-    
+    // initialize previous vector to keep track of the previous node in the path
+    std::vector<size_t> previous = std::vector<size_t>(this->getNumNodes(), -1);
+
     // initialize priority queue
     std::priority_queue<std::pair<size_t, double>, std::vector<std::pair<size_t, double> >, std::greater<std::pair<size_t, double> > > pq;
-    pq.push(std::pair<size_t, double>(startNodeId, 0));
+    pq.push(std::make_pair(startNodeId, 0));
 
-    std::cout << "I am here";
-    while(!unvisited.empty()) {
-        printf("I am running");
-        // std::cout << "I am running";
-
+    while(!pq.empty() && unvisited[endNodeId]) {
         size_t cur = pq.top().first;
         pq.pop();
-        unvisited.erase(std::remove(unvisited.begin(), unvisited.end(), cur), unvisited.end());
-        for (size_t i = 0; i < unvisited.size(); i++) {
-            std::cout << unvisited[i] << " ";
-        }
-        // std::cout << unvisited << std::endl;
+        unvisited[cur] = false;
+
         // Update distances to neighbors of current node
         std::map<size_t, double> neighbors = getAdj(cur);
         std::map<size_t, double>::iterator it = neighbors.begin();
@@ -177,13 +159,31 @@ double Graph::dijkstra(size_t startNodeId, size_t endNodeId) {
 
             if (newDist < dist[neighborId]) {
                 dist[neighborId] = newDist;
-                pq.push(std::pair<size_t, double>(neighborId, newDist));
+                previous[neighborId] = cur;
+                pq.push(std::make_pair(neighborId, newDist));
             }
+            it++;
         }
     }
 
+    // print out the path
+    std::vector<size_t> path;
+    size_t cur = endNodeId;
+    while (cur != startNodeId) {
+        path.push_back(cur);
+        cur = previous[cur];
+    }
+    path.push_back(startNodeId);
+    std::reverse(path.begin(), path.end());
+    for (size_t i = 0; i < path.size(); i++) {
+        std::cout << path[i];
+        if (i < path.size() - 1) {
+            std::cout << " -> ";
+        }
+    }
+    std::cout << std::endl;
 
     return dist[endNodeId];
-
 }
+
 
