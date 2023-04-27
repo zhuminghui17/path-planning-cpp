@@ -3,6 +3,8 @@
 #include <vector>
 #include <cstdlib>
 #include <map>
+#include <iostream>
+#include <queue>
 
 Graph::Graph(): nodes(std::vector<Node>()), adj(std::vector<std::map<size_t, double> >()) {
 }
@@ -121,5 +123,67 @@ std::ostream & operator<<(std::ostream & os, Graph & rhs) {
         os << std::endl;
     }
   return os;
+}
+
+double Graph::dijkstra(size_t startNodeId, size_t endNodeId) {
+    std::cout << "start dijkstra" << std::endl;
+    // get the adj of startNodeId
+    std::map<size_t, double> adj = getAdj(startNodeId);
+    std::cout << "get adj" << std::endl;
+    // initialize the distance vector for all nodes to be infinity
+    std::vector<double> dist = std::vector<double>();
+    for (size_t i = 0; i < this->getNumNodes(); i++) {
+        dist.push_back(100);
+    }
+
+    // set the distance of startNodeId to be 0
+    dist[startNodeId] = 0;
+
+    for (size_t i = 0; i < dist.size(); i++) {
+        std::cout << dist[i] << " ";
+    }
+    // initialize visited and unvisited
+    std::vector<size_t> visited = std::vector<size_t>();
+    std::vector<size_t> unvisited = std::vector<size_t>();
+
+    // initialize unvisited
+    for (size_t i = 0; i < this->getNumNodes(); i++) {
+        unvisited.push_back(i);
+    }
+    
+    // initialize priority queue
+    std::priority_queue<std::pair<size_t, double>, std::vector<std::pair<size_t, double> >, std::greater<std::pair<size_t, double> > > pq;
+    pq.push(std::pair<size_t, double>(startNodeId, 0));
+
+    std::cout << "I am here";
+    while(!unvisited.empty()) {
+        printf("I am running");
+        // std::cout << "I am running";
+
+        size_t cur = pq.top().first;
+        pq.pop();
+        unvisited.erase(std::remove(unvisited.begin(), unvisited.end(), cur), unvisited.end());
+        for (size_t i = 0; i < unvisited.size(); i++) {
+            std::cout << unvisited[i] << " ";
+        }
+        // std::cout << unvisited << std::endl;
+        // Update distances to neighbors of current node
+        std::map<size_t, double> neighbors = getAdj(cur);
+        std::map<size_t, double>::iterator it = neighbors.begin();
+        while (it != neighbors.end()) {
+            size_t neighborId = it->first;
+            double neighborDist = it->second;
+            double newDist = dist[cur] + neighborDist;
+
+            if (newDist < dist[neighborId]) {
+                dist[neighborId] = newDist;
+                pq.push(std::pair<size_t, double>(neighborId, newDist));
+            }
+        }
+    }
+
+
+    return dist[endNodeId];
+
 }
 
