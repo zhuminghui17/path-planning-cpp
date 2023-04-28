@@ -17,8 +17,16 @@ Due: May 2 12pm 2023
 - [ ] node type is unsigned integer. ?
 - [x] Print it
 - [ ] test cases and invalid stuffs
+can have zeros nodes
 
+every file needs "$node" "$edge"
+format wrong, bug
 
+ The node type is unsigned integer.?
 ### Step 2
 
 - [ ] Dijkstra's algorithm
+
+
+
+multiple $nodes, $edges

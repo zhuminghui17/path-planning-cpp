@@ -1,17 +1,3 @@
-Path Planning
-===========================================================================
-
-This mini-project option is writing a path planning program, such as an
-autonomous mobile robot might use. There is a progression of steps that use
-Dijkstra's algorithm and the A* algorithm.
-
-There are four steps for this assignment:
-
-Step 1
-  Read in a graph representation from a file.
-Step 2
-  Use Dijkstra's algorithm to calculate the shortest path from a start to
-  goal node.
 Step 3
   Use Dijkstra's algorithm to calculate the shortest path when there are
   obstacles.
@@ -19,8 +5,6 @@ Step 4
   Use the A* algorithm to calculate the shortest path when there are
   obstacles.
 
-Permitted domain knowledge resources (in addition to the other permitted
-resources like AoP and cplusplus.com/reference):
   - Introduction to Autonomous Robots by Nikolaus Correll (especially
     chapter 4)
     https://github.com/correll/Introduction-to-Autonomous-Robots/releases/tag/v1.9.2
@@ -28,65 +12,17 @@ resources like AoP and cplusplus.com/reference):
   - How to check if two lines intersect
     https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
 
-Step 1
-===========================================================================
-
-This step involves designing your graph structure and reading in a
-description of a grid map from a file to create a graph.
-
-This step should create the program "path-step1", which takes one command
-line argument, the name of the file to read the grid map from. A grid map
-file has two sections, one for the nodes beginning with "$nodes" and one
-for the edges beginning with "$edges".
-
-Each node line has the format
-
 nodeid x-coord y-coord
-
-such as
-
 2 1.0 0.0
 8 1.0 0.4
 
-meaning the first node's id is 2, its x-coordinate is 1.0, and its
-y-coordinate is 0.0. Node 8 has the same x-coordinate and a different
-y-coordinate. 
-
-Each edge line has the format
-
 node1 node2
-
-such as
-
 2 8
 
 meaning the two nodes with id 2 and 8 are connected by an undirected
 edge. It can be inferred that the weight of this edge is 0.4, since that is
 the Euclidean distance between nodes 2 and 8 from their coordinate
 information. 
-
-Your program should read the grid map information from this file and store
-it in a graph data structure. The file must have a $nodes section with zero
-or more nodes and an $edges section with zero or more edges, each with the
-specified format. The nodes may be listed in any order, but you may assume
-the IDs start at 0, and there are no gaps in the numbering once all nodes
-have been read. If there are any errors in the format of the input file,
-you should give an appropriate error message and exit with a failure
-status.
-
-You are free to implement the graph structure however you like, but here
-are some suggestions.
-
-  - A Point class that implements distanceFrom.
-  - A Graph class that implements addNode and addEdge and overloads
-    operator<<.
-  - The node type is unsigned integer.
-  - The edge information is stored as an adjacency list with a vector of
-    maps. The index of the vector is the node ID, and the value is a map of
-    its adjacencies as pairs of adjacent node and weight of the edge.
-  - Spatial information about the nodes is stored separately from the
-    adjacency list as a vector of points, where the index of the vector is
-    the node ID, and the value is its x- and y-coordinate information.
 
 Once your program reads in the grid map description, it should print it out
 in the following format:
