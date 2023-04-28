@@ -19,18 +19,8 @@ nodeid x-coord y-coord
 node1 node2
 2 8
 
-meaning the two nodes with id 2 and 8 are connected by an undirected
-edge. It can be inferred that the weight of this edge is 0.4, since that is
-the Euclidean distance between nodes 2 and 8 from their coordinate
-information. 
-
 Once your program reads in the grid map description, it should print it out
 in the following format:
-
-points represented by nodes (x,y) in order of node ID, separated by a
-space, on a single line
-each edge, one per line, indicating start node and each of its adjacencies
-in order of node ID
 
 For example, the output might be:
 
@@ -41,13 +31,6 @@ For example, the output might be:
 3: 0,0.5 1,0.707107 4,0.5
 4: 0,0.707107 1,0.5 2,0.707107 3,0.5 5,0.5
 5: 1,0.707107 2,0.5 4,0.5
-
-We recommend writing your code in a re-usable way for later parts, i.e. you
-should write as little code as possible in the source file with this step's
-main.
-
-Once you have thoroughly tested this step, add/commit/push before
-continuing to the next step.
 
 Step 2
 ===========================================================================
