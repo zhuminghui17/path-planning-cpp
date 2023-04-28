@@ -26,11 +26,12 @@ int main(int argc, char **argv) {
     Graph graph = Graph();
     readGridMap(gridmap, graph);
 
-    std::vector<std::vector<Node> > obs;
+
+    std::vector<std::vector<Node> > obs = std::vector<std::vector<Node> >();
     readObs(obstacles, graph, obs);
 
-    std::string startNodeId = argv[2];
-    std::string endNodeId = argv[3];
+    std::string startNodeId = argv[3];
+    std::string endNodeId = argv[4];
 
     graph.dijkstra(std::stoi(startNodeId), std::stoi(endNodeId));
         

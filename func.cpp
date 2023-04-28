@@ -89,26 +89,39 @@ void readGridMap(std::ifstream & input_file, Graph & graph) {
 
 
 // read obstacles
+/* at least two nodes per line, so at least one space per list
+*/
 void readObsFunc(std::string line, Graph & graph, std::vector<std::vector<Node> > & obs)
 {
-    // std::vector<Node> ob = std::vector<Node>();
-    //     // nodeid, x, y
-    // size_t firstSpacePos = line.find(" ");
-    // std::string nodeId = line.substr(0, firstSpacePos);
-    // size_t secondSpacePos = line.find(" ", firstSpacePos + 1);
-    // std::string x = line.substr(firstSpacePos + 1, secondSpacePos - firstSpacePos - 1);
-    // std::string y = line.substr(secondSpacePos + 1, line.length() - secondSpacePos - 1);
-
-
+    size_t spacePos = line.find(" ");
+    if (spacePos == line.npos) {
+        throw invalid_input();
+    }
     
-    // obs.push_back(node);
+    std::vector<size_t> nodeIds = std::vector<size_t>();
+
+    std::string nodeId = line.substr(0, spacePos);
+    nodeIds.push_back(std::stoi(nodeId));
+    
+    spacePos = line.find(" ",spacePos + 1);
+    while (spacePos != line.npos) {
+        nodeId = line.substr(spacePos + 1, line.length() - spacePos - 1);
+        nodeIds.push_back(std::stoi(nodeId));
+        spacePos = line.find(" ",spacePos + 1);
+    }
+    std::vector<Node> oneObs = std::vector<Node>();
+    for (size_t i = 0; i < nodeIds.size(); i++) {
+        oneObs.push_back(graph.getNode(nodeIds[i]));
+    }
+    obs.push_back(oneObs);
 }
 
 
-void readObs(std::ifstream & input_file, Graph & graph, std::vector<Node> obs) {
+void readObs(std::ifstream & input_file, Graph & graph, std::vector<std::vector<Node> > & obs) {
     // initialize line and conditional boolean
     std::string line;
     int readObs = 0;
+    
     
     while (std::getline(input_file, line)) {
         if (line.empty()) {
