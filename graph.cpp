@@ -98,17 +98,6 @@ Node Graph::getNode(size_t nodeId) {
     return nodes[nodeId];
 }
 
-// print it out
-
-// (0,0) (0.5,0) (1,0) (0,0.5) (0.5,0.5) (1,0.5) 
-// 0: 1,0.5 3,0.5 4,0.707107
-// 1: 0,0.5 2,0.5 3,0.707107 4,0.5 5,0.707107
-// 2: 1,0.5 4,0.707107 5,0.5
-// 3: 0,0.5 1,0.707107 4,0.5
-// 4: 0,0.707107 1,0.5 2,0.707107 3,0.5 5,0.5
-// 5: 1,0.707107 2,0.5 4,0.5
-
-
 size_t Graph::getAdjSize() {
     return adj.size();
 }
@@ -220,6 +209,14 @@ void Graph::changeWeight(size_t firstNodeId, size_t secondNodeId, double newWeig
 }
 
 
+// Custom comparison function that compares the second element of pairs
+struct ComparePairs {
+    bool operator() (const std::pair<size_t, double>& p1, const std::pair<size_t, double>& p2) const {
+        return p1.second > p2.second;
+    }
+};
+
+
 void Graph::Astar(size_t startNodeId, size_t endNodeId) {
     // use a map to store, g h f
     std::map<size_t, std::vector<double> > ghf;
@@ -243,7 +240,7 @@ void Graph::Astar(size_t startNodeId, size_t endNodeId) {
     std::vector<size_t> previous = std::vector<size_t>(this->getNumNodes(), -1);
 
     // initialize priority queue
-    std::priority_queue<std::pair<size_t, double>, std::vector<std::pair<size_t, double> >, std::greater<std::pair<size_t, double> > > pq;
+    std::priority_queue<std::pair<size_t, double>, std::vector<std::pair<size_t, double> >, ComparePairs > pq;
     pq.push(std::make_pair(startNodeId, ghf[startNodeId][2]));
 
     while (!pq.empty() && unvisited[endNodeId]) {
@@ -260,12 +257,12 @@ void Graph::Astar(size_t startNodeId, size_t endNodeId) {
         while (it != neighbors.end()) {
             size_t neighborId = it->first;
             double neighborDist = it->second;
-            double newDist = ghf[cur][0] + neighborDist;
+            double newG = ghf[cur][0] + neighborDist;
             double newH = this->getNode(neighborId).distanceFrom(this->getNode(endNodeId));
-            double newF = newDist + newH;
+            double newF = newG + newH;
 
             if (newF < ghf[neighborId][2]) {
-                ghf[neighborId][0] = newDist;
+                ghf[neighborId][0] = newG;
                 ghf[neighborId][1] = newH;
                 ghf[neighborId][2] = newF;
                 previous[neighborId] = cur;
@@ -275,7 +272,6 @@ void Graph::Astar(size_t startNodeId, size_t endNodeId) {
         }
     }
 
-        // print out the path
     std::vector<size_t> path;
     size_t cur = endNodeId;
     while (cur != startNodeId) {
