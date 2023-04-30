@@ -20,6 +20,8 @@ class Node {
         double getY();
         double distanceFrom(const Node & rhs);
         friend std::ostream & operator<<(std::ostream & os, Node & rhs);
+        bool operator==(const Node & rhs) const;
+        double slopeFrom(const Node & rhs);
 };
 
 

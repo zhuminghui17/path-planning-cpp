@@ -24,4 +24,11 @@ std::ostream & operator<<(std::ostream & os, Node & rhs) {
     return os;
 }
 
+bool Node::operator==(const Node & rhs) const {
+    return (x == rhs.x && y == rhs.y);
+}
+
+double Node::slopeFrom(const Node & rhs) {
+    return (y - rhs.y) / (x - rhs.x);
+}
 

@@ -25,5 +25,7 @@ class Graph {
         size_t getAdjSize();
         std::map<size_t, double> getAdj(size_t nodeId);
         void dijkstra(size_t startNodeId, size_t endNodeId);
+        std::vector<std::pair<Node, Node> > addOneObs(std::vector<Node> oneObs);
+        
 
 };

@@ -50,6 +50,15 @@ void Graph::addEdge(size_t f, size_t s) {
         exit(EXIT_FAILURE);
     }
 
+    // check if there is edge between f and s
+    if (adj[f].find(s) != adj[f].end()) {
+        return;
+    }
+
+    if (adj[s].find(f) != adj[s].end()) {
+        return;
+    }
+
     // map: key is f or s, value is the distance between f and s
     // remember to initialize the the adj[] as empty map
     
@@ -187,3 +196,15 @@ void Graph::dijkstra(size_t startNodeId, size_t endNodeId) {
 }
 
 
+std::vector<std::pair<Node, Node> > Graph::addOneObs(std::vector<Node> oneObs) {
+    std::vector<std::pair<Node, Node> > PairObs;
+    for (size_t i = 0; i < oneObs.size(); i++) {
+        for (size_t j = i + 1; j < oneObs.size(); j++) {
+            addEdge(oneObs[i].getNodeId(), oneObs[j].getNodeId());
+            std::pair<Node, Node> PairObs = std::make_pair(oneObs[i], oneObs[j]);
+        }    
+    }
+    return PairObs;
+
+    
+}

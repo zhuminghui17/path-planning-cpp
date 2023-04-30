@@ -26,14 +26,20 @@ int main(int argc, char **argv) {
     Graph graph = Graph();
     readGridMap(gridmap, graph);
 
-
     std::vector<std::vector<Node> > obs = std::vector<std::vector<Node> >();
     readObs(obstacles, graph, obs);
+    
+    std::vector<std::vector<std::pair<Node, Node> > > pairObsVec = std::vector<std::vector<std::pair<Node, Node> > >();
+    std::set<Edge> edgeSet = std::set<Edge>();
+
+    addEdgeForObs(obs, graph, pairObsVec, edgeSet);
+
 
     std::string startNodeId = argv[3];
     std::string endNodeId = argv[4];
 
     graph.dijkstra(std::stoi(startNodeId), std::stoi(endNodeId));
+
         
     gridmap.close();
     obstacles.close();

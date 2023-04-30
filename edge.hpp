@@ -1,0 +1,17 @@
+#include "node.cpp"
+
+class Edge {
+    private:
+        Node start;
+        Node end;
+        // double weight;
+    public:
+        Edge(Node start, Node end);
+        double getweight();
+        bool checkIntersect(Edge & e);
+        bool touchObs(std::vector<std::vector<Node> > allObs);
+        bool intersectObs(std::vector<std::vector<std::pair<Node, Node> > >pairObsVec);
+        Node getStart();
+        Node getEnd();
+
+};
