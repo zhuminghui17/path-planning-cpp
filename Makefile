@@ -2,11 +2,11 @@ CPPFLAGS=-Werror -Wall -pedantic -std=gnu++98 -ggdb3
 PROGS=path-step1 path-step2 path-step3 #path-step4
 all: $(PROGS)
 
-path-step1: path-step1.o node.o graph.o
+path-step1: path-step1.o node.o graph.o edge.o
 	g++ -o $@ $^
-path-step2: path-step2.o node.o graph.o
+path-step2: path-step2.o node.o graph.o edge.o
 	g++ -o $@ $^
-path-step3: path-step3.o node.o graph.o
+path-step3: path-step3.o node.o graph.o	edge.o
 	g++ -o $@ $^
 # num_sim: num_sim.o myode.o euler.o
 # 	g++ -o $@ $^
@@ -20,3 +20,4 @@ clean:
 
 node.o: node.hpp
 graph.o: graph.hpp
+edge.o: edge.hpp

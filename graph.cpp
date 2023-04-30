@@ -197,14 +197,25 @@ void Graph::dijkstra(size_t startNodeId, size_t endNodeId) {
 
 
 std::vector<std::pair<Node, Node> > Graph::addOneObs(std::vector<Node> oneObs) {
-    std::vector<std::pair<Node, Node> > PairObs;
+    std::vector<std::pair<Node, Node> > PairNodeforOneObs;
     for (size_t i = 0; i < oneObs.size(); i++) {
         for (size_t j = i + 1; j < oneObs.size(); j++) {
             addEdge(oneObs[i].getNodeId(), oneObs[j].getNodeId());
             std::pair<Node, Node> PairObs = std::make_pair(oneObs[i], oneObs[j]);
+            PairNodeforOneObs.push_back(PairObs);
         }    
     }
-    return PairObs;
-
-    
+    return PairNodeforOneObs;    
 }
+
+void Graph::changeWeight(size_t firstNodeId, size_t secondNodeId, double newWeight) {
+    // check if there is edge between f and s
+    if (adj[firstNodeId].find(secondNodeId) != adj[firstNodeId].end()) {
+        adj[firstNodeId][secondNodeId] = newWeight;
+    }
+
+    if (adj[secondNodeId].find(firstNodeId) != adj[secondNodeId].end()) {
+        adj[secondNodeId][firstNodeId] = newWeight;
+    }
+}
+

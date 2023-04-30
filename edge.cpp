@@ -1,6 +1,5 @@
 #include "edge.hpp"
 
-
 Edge::Edge(Node start, Node end): start(start), end(end) {
 }
 
@@ -68,7 +67,7 @@ bool Edge::touchObs(std::vector<std::vector<Node> > allObs) {
     // if touch, return true
     // else return false
     for (size_t i = 0; i < allObs.size(); i++) {
-        for (size_t j = 0; j < allObs[i].size() - 1; j++) {
+        for (size_t j = 0; j < allObs[i].size(); j++) {
             if (allObs[i][j] == start || allObs[i][j] == end) {
                 return true;
             }
@@ -91,3 +90,13 @@ bool Edge::intersectObs(std::vector<std::vector<std::pair<Node, Node> > >pairObs
     }
     return false;
 }
+
+bool Edge::operator==(const Edge & e) const {
+    return (start == e.start && end == e.end) || (start == e.end && end == e.start);
+}
+
+std::ostream & operator<<(std::ostream & os, Edge & rhs) {
+    os << rhs.start << "->" << rhs.end;
+    return os;
+}
+

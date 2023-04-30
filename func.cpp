@@ -8,7 +8,6 @@
 #include <string>
 #include <sstream>
 #include <map>
-#include <set>
 
 class invalid_input : public std::exception {
     public:
@@ -105,11 +104,15 @@ void readObsFunc(std::string line, Graph & graph, std::vector<std::vector<Node> 
     std::string nodeId = line.substr(0, spacePos); // first node
     nodeIds.push_back(std::stoi(nodeId)); // add first node
     
-    spacePos = line.find(" ",spacePos + 1); // find second space
-    while (spacePos != line.npos) { // while there are still spaces
-        nodeId = line.substr(spacePos + 1, line.length() - spacePos - 1); // get next node
+    size_t newSpacePos = line.find(" ",spacePos + 1); // find second space
+    while (newSpacePos != line.npos) { // while there are still spaces
+        nodeId = line.substr(spacePos + 1, line.length() - newSpacePos); // get next node
         nodeIds.push_back(std::stoi(nodeId));   // add next node
-        spacePos = line.find(" ",spacePos + 1); // find next space
+        // has a bug below, can not use line to find next space, because line is not updated
+        std::string following = line.substr(spacePos + 1);
+        spacePos = newSpacePos;
+        newSpacePos = following.find(" ");
+        // spacePos = line.find(" ",spacePos + 1); // find next space
     }
     std::vector<Node> oneObs = std::vector<Node>();
     for (size_t i = 0; i < nodeIds.size(); i++) {
@@ -136,41 +139,65 @@ void readObs(std::ifstream & input_file, Graph & graph, std::vector<std::vector<
             readObsFunc(line, graph, obs);
         } 
     }
-    
     std::cout << "obs size: " << obs.size() << std::endl;
 }
 
 void addEdgeForObs(std::vector<std::vector<Node> > obs, Graph & graph,
     std::vector<std::vector<std::pair<Node, Node> > > & pairObsVec,
-    std::set<Edge> & edgeSet) {
+    std::vector<Edge> & edgeObs) {
     for (size_t i = 0; i < obs.size(); i++) {
-        std::vector<std::pair<Node, Node> > pairObs = graph.addOneObs(obs[i]);          
-        pairObsVec.push_back(pairObs);
-        for (size_t j = 0; j < pairObs.size(); j++) {
-            Edge edge = Edge(pairObs[j].first, pairObs[j].second);
-            edgeSet.insert(edge);
+        std::vector<std::pair<Node, Node> > PairNodeforOneObs = graph.addOneObs(obs[i]);          
+        pairObsVec.push_back(PairNodeforOneObs);
+        for (size_t j = 0; j < PairNodeforOneObs.size(); j++) {
+            Edge edge = Edge(PairNodeforOneObs[j].first, PairNodeforOneObs[j].second);
+            edgeObs.push_back(edge);
         }
     }
+    // // print edgeObs
+    // for (size_t i = 0; i < edgeObs.size(); i++) {
+    //     std::cout << edgeObs[i] << std::endl;
+    // }
 }
 
 // - so for each value of each key in adj list, initialize the edge, 
 // if the edge not in obs edge, check if it touch the obs, check if it
 //  intersect with obs, if so, change its weight to inf.
 
-void checkEdgeStillWork(Graph & graph, std::set<Edge> & edgeSet, std::vector<std::vector<std::pair<Node, Node> > > & pairObsVec, std::vector<std::vector<Node> > & obs) {
-    for (size_t i = 0; i < graph.getNumNodes(); i++) {
-        std::map<size_t, double> adj = graph.getAdj(i);
+void checkEdgeStillWork(Graph & graph, std::vector<Edge> & edgeObs, std::vector<std::vector<std::pair<Node, Node> > > & pairObsVec, std::vector<std::vector<Node> > & obs) {
+    // printObs
+    for (size_t i = 0; i < obs.size(); i++) {
+        std::cout << "obs " << i << ": ";
+        for (size_t j = 0; j < obs[i].size(); j++) {
+            std::cout << obs[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+    
+    for (size_t i = 0; i < graph.getNumNodes(); i++) { // index
+        std::map<size_t, double> adj = graph.getAdj(i); // key value
         for (std::map<size_t, double>::iterator it = adj.begin(); it != adj.end(); ++it) {
             Edge edge = Edge(graph.getNode(i), graph.getNode(it->first));
-            if (edgeSet.find(edge) != edgeSet.end()) { // it's a obs edge
-                it->second = std::numeric_limits<double>::infinity();
+            // print edge
+            // std::cout << edge << std::endl;
+
+            // check if it's a obs edge
+            if (std::find(edgeObs.begin(), edgeObs.end(), edge) != edgeObs.end()) {
+                graph.changeWeight(i, it->first, std::numeric_limits<double>::infinity());
             }
             else {
                 // check if it touch the obs
                 if (edge.touchObs(obs) || edge.intersectObs(pairObsVec)) {
-                    it->second = std::numeric_limits<double>::infinity();
+                    graph.changeWeight(i, it->first, std::numeric_limits<double>::infinity());
                 }   
             }
+        }
+    }
+    // print graph's adj list and weight
+    for (size_t i = 0; i < graph.getNumNodes(); i++) {
+        std::map<size_t, double> adj = graph.getAdj(i);
+        std::cout << "node " << i << " adj: ";
+        for (std::map<size_t, double>::iterator it = adj.begin(); it != adj.end(); ++it) {
+            std::cout << it->first << " " << it->second << " " << std::endl;
         }
     }
 }

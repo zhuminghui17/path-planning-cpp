@@ -1,3 +1,5 @@
+#ifndef NODE_HPP
+#define NODE_HPP
 #include "node.hpp"
 
 Node::Node(double a, double b, size_t id): x(a), y(b), nodeId(id) {
@@ -31,4 +33,6 @@ bool Node::operator==(const Node & rhs) const {
 double Node::slopeFrom(const Node & rhs) {
     return (y - rhs.y) / (x - rhs.x);
 }
+
+#endif // NODE_HPP
 

@@ -2,7 +2,6 @@
 #define NODE_H
 
 #include <assert.h>
-
 #include <cmath>
 #include <cstdlib>
 #include <iostream>

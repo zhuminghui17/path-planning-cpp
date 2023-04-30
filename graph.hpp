@@ -1,3 +1,5 @@
+#ifndef GRAPH_HPP
+#define GRAPH_HPP
 #include <vector>
 #include <cstdlib>
 #include "node.hpp"
@@ -26,7 +28,12 @@ class Graph {
         std::map<size_t, double> getAdj(size_t nodeId);
         void dijkstra(size_t startNodeId, size_t endNodeId);
         std::vector<std::pair<Node, Node> > addOneObs(std::vector<Node> oneObs);
+        void changeWeight(size_t firstNodeId, size_t secondNodeId, double newWeight);
         
 
 
 };
+
+#endif
+
+
