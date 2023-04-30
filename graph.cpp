@@ -219,3 +219,78 @@ void Graph::changeWeight(size_t firstNodeId, size_t secondNodeId, double newWeig
     }
 }
 
+
+void Graph::Astar(size_t startNodeId, size_t endNodeId) {
+    // use a map to store, g h f
+    std::map<size_t, std::vector<double> > ghf;
+    // initialize the map, g value = inf, h value = inf, f value = inf
+    for (size_t i = 0; i < this->getNumNodes(); i++) {
+        std::vector<double> v = std::vector<double>(3, std::numeric_limits<double>::infinity());
+        ghf[i] = v;
+    }
+    // set the g value of startNodeId to be 0
+    ghf[startNodeId][0] = 0;
+    // set the h value of startNodeId to be the distance between startNodeId and endNodeId
+    ghf[startNodeId][1] = this->getNode(startNodeId).distanceFrom(this->getNode(endNodeId));
+    // set the f value of startNodeId to be the sum of g and h
+    ghf[startNodeId][2] = ghf[startNodeId][0] + ghf[startNodeId][1];
+    
+    // initialize visited and unvisited
+    std::vector<size_t> visited;
+    std::vector<bool> unvisited = std::vector<bool>(this->getNumNodes(), true);
+
+    // initialize previous vector to keep track of the previous node in the path
+    std::vector<size_t> previous = std::vector<size_t>(this->getNumNodes(), -1);
+
+    // initialize priority queue
+    std::priority_queue<std::pair<size_t, double>, std::vector<std::pair<size_t, double> >, std::greater<std::pair<size_t, double> > > pq;
+    pq.push(std::make_pair(startNodeId, ghf[startNodeId][2]));
+
+    while (!pq.empty() && unvisited[endNodeId]) {
+        size_t cur = pq.top().first;
+        pq.pop();
+        unvisited[cur] = false;
+
+        if (cur == endNodeId) {
+            break;
+        }
+        // Update distances to neighbors of current node
+        std::map<size_t, double> neighbors = getAdj(cur);
+        std::map<size_t, double>::iterator it = neighbors.begin();
+        while (it != neighbors.end()) {
+            size_t neighborId = it->first;
+            double neighborDist = it->second;
+            double newDist = ghf[cur][0] + neighborDist;
+            double newH = this->getNode(neighborId).distanceFrom(this->getNode(endNodeId));
+            double newF = newDist + newH;
+
+            if (newF < ghf[neighborId][2]) {
+                ghf[neighborId][0] = newDist;
+                ghf[neighborId][1] = newH;
+                ghf[neighborId][2] = newF;
+                previous[neighborId] = cur;
+                pq.push(std::make_pair(neighborId, newF));
+            }
+            it++;
+        }
+    }
+
+        // print out the path
+    std::vector<size_t> path;
+    size_t cur = endNodeId;
+    while (cur != startNodeId) {
+        path.push_back(cur);
+        cur = previous[cur];
+    }
+    path.push_back(startNodeId);
+    std::reverse(path.begin(), path.end());
+    for (size_t i = 0; i < path.size(); i++) {
+        std::cout << path[i];
+        if (i < path.size() - 1) {
+            std::cout << " ";
+        }
+    }
+
+    std::cout << " : " << ghf[endNodeId][2] << std::endl;
+}
+

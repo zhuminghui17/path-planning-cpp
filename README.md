@@ -47,3 +47,6 @@ map1: no 0 index but start from 1, should be wrong
 
 addEdge要检查是否已经有edge
 
+### step 4
+
+use a map to store g, h, (f)

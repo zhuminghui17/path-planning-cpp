@@ -139,7 +139,7 @@ void readObs(std::ifstream & input_file, Graph & graph, std::vector<std::vector<
             readObsFunc(line, graph, obs);
         } 
     }
-    std::cout << "obs size: " << obs.size() << std::endl;
+    // std::cout << "obs size: " << obs.size() << std::endl;
 }
 
 void addEdgeForObs(std::vector<std::vector<Node> > obs, Graph & graph,
@@ -165,13 +165,13 @@ void addEdgeForObs(std::vector<std::vector<Node> > obs, Graph & graph,
 
 void checkEdgeStillWork(Graph & graph, std::vector<Edge> & edgeObs, std::vector<std::vector<std::pair<Node, Node> > > & pairObsVec, std::vector<std::vector<Node> > & obs) {
     // printObs
-    for (size_t i = 0; i < obs.size(); i++) {
-        std::cout << "obs " << i << ": ";
-        for (size_t j = 0; j < obs[i].size(); j++) {
-            std::cout << obs[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
+    // for (size_t i = 0; i < obs.size(); i++) {
+    //     std::cout << "obs " << i << ": ";
+    //     for (size_t j = 0; j < obs[i].size(); j++) {
+    //         std::cout << obs[i][j] << " ";
+    //     }
+    //     std::cout << std::endl;
+    // }
     
     for (size_t i = 0; i < graph.getNumNodes(); i++) { // index
         std::map<size_t, double> adj = graph.getAdj(i); // key value
@@ -193,12 +193,12 @@ void checkEdgeStillWork(Graph & graph, std::vector<Edge> & edgeObs, std::vector<
         }
     }
     // print graph's adj list and weight
-    for (size_t i = 0; i < graph.getNumNodes(); i++) {
-        std::map<size_t, double> adj = graph.getAdj(i);
-        std::cout << "node " << i << " adj: ";
-        for (std::map<size_t, double>::iterator it = adj.begin(); it != adj.end(); ++it) {
-            std::cout << it->first << " " << it->second << " " << std::endl;
-        }
-    }
+    // for (size_t i = 0; i < graph.getNumNodes(); i++) {
+    //     std::map<size_t, double> adj = graph.getAdj(i);
+    //     std::cout << "node " << i << " adj: ";
+    //     for (std::map<size_t, double>::iterator it = adj.begin(); it != adj.end(); ++it) {
+    //         std::cout << it->first << " " << it->second << " " << std::endl;
+    //     }
+    // }
 }
 

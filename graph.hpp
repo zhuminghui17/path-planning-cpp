@@ -29,9 +29,7 @@ class Graph {
         void dijkstra(size_t startNodeId, size_t endNodeId);
         std::vector<std::pair<Node, Node> > addOneObs(std::vector<Node> oneObs);
         void changeWeight(size_t firstNodeId, size_t secondNodeId, double newWeight);
-        
-
-
+        void Astar(size_t startNodeId, size_t endNodeId);
 };
 
 #endif
