@@ -28,4 +28,5 @@ class Graph {
         std::vector<std::pair<Node, Node> > addOneObs(std::vector<Node> oneObs);
         
 
+
 };

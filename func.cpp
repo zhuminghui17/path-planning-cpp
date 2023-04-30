@@ -11,12 +11,11 @@
 #include <set>
 
 class invalid_input : public std::exception {
-public:
+    public:
     const char *what() const throw() { return "Invalid Input Format"; };
 };
 
-void readNodesFunc(std::string line, Graph & graph)
-{
+void readNodesFunc(std::string line, Graph & graph) {
     // nodeid, x, y
     size_t firstSpacePos = line.find(" ");
     std::string nodeId = line.substr(0, firstSpacePos);

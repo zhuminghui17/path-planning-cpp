@@ -33,13 +33,12 @@ int main(int argc, char **argv) {
     std::set<Edge> edgeSet = std::set<Edge>();
 
     addEdgeForObs(obs, graph, pairObsVec, edgeSet);
-
+    checkEdgeStillWork(graph, edgeSet, pairObsVec, obs);
 
     std::string startNodeId = argv[3];
     std::string endNodeId = argv[4];
 
     graph.dijkstra(std::stoi(startNodeId), std::stoi(endNodeId));
-
         
     gridmap.close();
     obstacles.close();
