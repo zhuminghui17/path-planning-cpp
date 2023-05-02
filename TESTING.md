@@ -169,3 +169,6 @@ The output should be
 The test case examine that the program works if the nodes may be listed in any order without any gap in numbering.
 
 # Step 2
+The algorithm is finished when the shortest path
+to the goal node has been found or it can be determined that there is no
+path. 

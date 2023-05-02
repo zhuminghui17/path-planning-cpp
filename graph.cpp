@@ -124,24 +124,47 @@ void Graph::dijkstra(size_t startNodeId, size_t endNodeId) {
         pq.pop();
         unvisited[cur] = false;
 
-        // Update distances to neighbors of current node
-        std::map<size_t, double> neighbors = getAdj(cur);
-        std::map<size_t, double>::iterator it = neighbors.begin();
-        while (it != neighbors.end()) {
-            size_t neighborId = it->first;
-            double neighborDist = it->second;
-            double newDist = dist[cur] + neighborDist;
+            // Update distances to neighbors of current node
+    std::map<size_t, double> neighbors = getAdj(cur);
+    std::map<size_t, double>::iterator it = neighbors.begin();
+    while (it != neighbors.end()) {
+        size_t neighborId = it->first;
+        double neighborDist = it->second;
+        double newDist = dist[cur] + neighborDist;
 
-            if (newDist < dist[neighborId]) {
-                dist[neighborId] = newDist;
-                previous[neighborId] = cur;
-                pq.push(std::make_pair(neighborId, newDist));
+        if (newDist < dist[neighborId]) {
+            dist[neighborId] = newDist;
+            previous[neighborId] = cur;
+            pq.push(std::make_pair(neighborId, newDist));
+            
+            // print out the new best path found
+            std::vector<size_t> path;
+            size_t tmp = neighborId;
+            while (tmp != startNodeId) {
+                path.push_back(tmp);
+                tmp = previous[tmp];
             }
-            it++;
+            path.push_back(startNodeId);
+            std::reverse(path.begin(), path.end());
+            double cost = dist[neighborId];
+            std::cout << "New best path found: ";
+            for (size_t i = 0; i < path.size(); i++) {
+                std::cout << path[i];
+                if (i < path.size() - 1) {
+                    std::cout << " ";
+                }
+            }
+            std::cout << " : " << cost << std::endl;
         }
+        it++;
     }
+}
 
-    // print out the path
+// If endNodeId was not reached, there is no path
+if (dist[endNodeId] == std::numeric_limits<double>::infinity()) {
+    std::cout << "No path found" << std::endl;
+} else {
+    // print out the final best path
     std::vector<size_t> path;
     size_t cur = endNodeId;
     while (cur != startNodeId) {
@@ -150,18 +173,17 @@ void Graph::dijkstra(size_t startNodeId, size_t endNodeId) {
     }
     path.push_back(startNodeId);
     std::reverse(path.begin(), path.end());
+    double cost = dist[endNodeId];
+    std::cout << "Shortest path found: ";
     for (size_t i = 0; i < path.size(); i++) {
         std::cout << path[i];
         if (i < path.size() - 1) {
             std::cout << " ";
         }
     }
-    std::cout << " : " << dist[endNodeId] << std::endl;
-
-    // return dist[endNodeId];
+    std::cout << " : " << cost << std::endl;
 }
-
-
+}
 std::vector<std::pair<Node, Node> > Graph::addOneObs(std::vector<Node> oneObs) {
     std::vector<std::pair<Node, Node> > PairNodeforOneObs;
     for (size_t i = 0; i < oneObs.size(); i++) {
