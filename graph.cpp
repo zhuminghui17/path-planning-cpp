@@ -266,29 +266,53 @@ void Graph::Astar(size_t startNodeId, size_t endNodeId) {
                 ghf[neighborId][2] = newF;
                 previous[neighborId] = cur;
                 pq.push(std::make_pair(neighborId, newF));
+
+                // print out the new best path found
+                std::vector<size_t> path;
+                size_t tmp = neighborId;
+                while (tmp != startNodeId) {
+                    path.push_back(tmp);
+                    tmp = previous[tmp];
+                }
+                path.push_back(startNodeId);
+                std::reverse(path.begin(), path.end());
+                std::cout << "New best path found: ";
+                for (size_t i = 0; i < path.size(); i++) {
+                    std::cout << path[i];
+                    if (i < path.size() - 1) {
+                        std::cout << " ";
+                    }
+                }
+                std::cout << " : " << ghf[neighborId][2] << std::endl;                
             }
             it++;
         }
     }
 
-    std::vector<size_t> path;
-    size_t cur = endNodeId;
-    while (cur != startNodeId) {
-        path.push_back(cur);
-        cur = previous[cur];
-    }
-    path.push_back(startNodeId);
-    std::reverse(path.begin(), path.end());
-    for (size_t i = 0; i < path.size(); i++) {
-        std::cout << path[i];
-        if (i < path.size() - 1) {
-            std::cout << " ";
+    // If endNodeId was not reached, there is no path
+    if (ghf[endNodeId][2] == std::numeric_limits<double>::infinity()) {
+        std::cout << "No path found" << std::endl;
+    }  else {
+        // print out the final best path
+        std::vector<size_t> path;
+        size_t cur = endNodeId;
+        while (cur != startNodeId) {
+            path.push_back(cur);
+            cur = previous[cur];
         }
+        path.push_back(startNodeId);
+        std::reverse(path.begin(), path.end());
+        for (size_t i = 0; i < path.size(); i++) {
+            std::cout << path[i];
+            if (i < path.size() - 1) {
+                std::cout << " ";
+            }
+        }
+        std::cout << " : " << ghf[endNodeId][2] << std::endl;
     }
-
-    std::cout << " : " << ghf[endNodeId][2] << std::endl;
 }
 
+    
 
 void Graph::checkNodeValid(size_t nodeId) {
     try {

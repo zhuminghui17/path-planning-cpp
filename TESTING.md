@@ -50,14 +50,14 @@ Because it's a non-existing fake file.
 4. Run `./path-step1 data/gridmap/bugmap_s1_4.txt`
 The output should be
 ```
-Invalid format. Please check the format.
+Invalid Input.
 ```
 Because there is non-numeric in reading nodes (O in line 2).
 
 5. Run `./path-step1 data/gridmap/bugmap_s1_5.txt`
 The output should be
 ```
-Invalid format. Please check the format.
+Invalid Input.
 ```
 Because there is non-numeric in reading edges (I in line 9).
 
@@ -169,6 +169,40 @@ The output should be
 The test case examine that the program works if the nodes may be listed in any order without any gap in numbering.
 
 # Step 2
-The algorithm is finished when the shortest path
-to the goal node has been found or it can be determined that there is no
-path. 
+1. Run `./path-step2 data/gridmap/sample_input.txt 0 23`
+
+
+2. Run `./path-step2 data/gridmap/sample_input.txt 0 `
+The output should be
+```
+Argument count is not correct! It should be 4!
+```
+Because step2 program read in the gridmap file and read the start and goal nodeIds. Altogether the argument count is 4. 
+
+3. one testcase about check input start id is not int
+
+4. one testcase about check input goal id is not int
+
+5. one testcase about check input start id is not on the graph
+
+6. ne testcase about check input goal id is not on the graph
+
+7. one testcase about no path (it should print it out) No path exists"
+and exit with a failure status. 
+
+8. one testcase about if there are multiple paths with the lowest cost, choose the one to the node with the smallest node ID. 
+
+double in the int field
+
+
+# Step 3
+1. about agrc
+2. missing "$obstacles" 
+3. for one of a line, one point in obs
+4. include invalid obstacles
+5. "$obstacles" more than once?
+6. no path availble with if all path is inf
+
+
+TODO:
+

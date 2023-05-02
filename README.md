@@ -69,3 +69,5 @@ check some invalid numbers
 check if some points already have
 
 after add nodes, check and sort because the it should work well
+
+no path availablle 
