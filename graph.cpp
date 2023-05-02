@@ -320,7 +320,7 @@ void Graph::Astar(size_t startNodeId, size_t endNodeId) {
 void Graph::checkNodeValid(size_t nodeId) {
     try {
         if (nodeId < 0 || nodeId >= nodes.size()) {
-            throw invalid_input();
+            throw invalid_input("Node id is not valid in the graph!");
         }
     }
     catch (invalid_input & e) {
@@ -341,7 +341,7 @@ void Graph::checkNodes() {
         // iterate through the nodes vector, if the node id is not consecutive, throw invalid_input
         for (size_t i = 0; i < nodes.size(); i++) {
             if (nodes[i].getNodeId() != i) {
-                throw invalid_input();
+                throw invalid_input("There is a gap in numbering nodes!");
             }
         }
     }

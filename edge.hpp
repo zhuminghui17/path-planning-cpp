@@ -17,7 +17,6 @@ class Edge
     - operator==() compares two edges
 */
 
-
 class Edge {
     private:
         Node start;

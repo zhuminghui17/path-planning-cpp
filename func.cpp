@@ -39,7 +39,7 @@ void checkOnlyNumeric(std::string line) {
     try {
         for (size_t i = 0; i < line.length(); i++) {
             if (isalpha(line[i])) {
-                throw invalid_input();
+                throw invalid_input("The input is not numeric!");
             }
         }
     }
@@ -54,7 +54,7 @@ void checkOnlyInt(std::string line) {
     try {
         for (size_t i = 0; i < line.length(); i++) {
             if (isalpha(line[i]) || line[i] == '.') {
-                throw invalid_input();
+                throw invalid_input("The input is not integer!");
             }
         }
     }
@@ -70,12 +70,11 @@ void readNodesFunc(std::string line, Graph & graph) {
 
     // check no letter in the line
     checkOnlyNumeric(line);
-
     try {
         size_t firstSpacePos = line.find(" ");
         size_t secondSpacePos = line.find(" ", firstSpacePos + 1);
         if (firstSpacePos == line.npos || secondSpacePos == line.npos) {
-            throw invalid_input();
+            throw invalid_input("There is node information missing in the line!");
         }
         std::string nodeId = line.substr(0, firstSpacePos);
         std::string x = line.substr(firstSpacePos + 1, secondSpacePos - firstSpacePos - 1);
@@ -83,7 +82,7 @@ void readNodesFunc(std::string line, Graph & graph) {
         size_t thirdSpacePos = line.find(" ", secondSpacePos + 1); // third space if exist
         
         if (thirdSpacePos != line.npos) { // avoid more input in the lines
-            throw invalid_input();
+            throw invalid_input("There is node information more than needed in the line!");
         }
 
         std::string y = line.substr(secondSpacePos + 1, line.length() - secondSpacePos - 1);
@@ -105,13 +104,13 @@ void readEdgesFunc(std::string line, Graph  & graph) {
     try {
     size_t firstSpacePos = line.find(" ");
     if (firstSpacePos == line.npos) {
-        throw invalid_input();
+        throw invalid_input("There is edge information missing in the line!");
     }
 
     size_t secondSpacePos = line.find(" ", firstSpacePos + 1); // third space if exist
     
     if (secondSpacePos != line.npos) { // avoid more input in the lines
-        throw invalid_input();
+        throw invalid_input("There is edge information more than needed in the line!");
     }
     
     std::string firstNodeId = line.substr(0, firstSpacePos);
@@ -138,7 +137,7 @@ void readGridMap(std::ifstream & input_file, Graph & graph) {
             }
             // if #edges is before #nodes, throw error
             else if (readNodesStatus == 0 && readEdgesStatus == 0 && line.find("$edges") != line.npos) {
-                throw invalid_input();
+                throw invalid_input("$edges is before $nodes!");
             }
             else if (readNodesStatus == 0 && readEdgesStatus == 0 && line.find("$nodes") != line.npos) {
                 readNodesStatus++;
@@ -156,14 +155,15 @@ void readGridMap(std::ifstream & input_file, Graph & graph) {
                 readEdgesFunc(line, graph);
             }
             else {
-                throw invalid_input(); // unexpected input, for example, multiple $nodes
+                throw invalid_input("There is unexpected input."); // unexpected input, for example, multiple $nodes
             }
         }
         readEdgesStatus++;
         graph.checkNodes();
         // if #nodes or #edges is not read, throw error
         if (readNodesStatus != 2 || readEdgesStatus != 2) {
-            throw invalid_input(); // have not read nodes or edges, or not finished reading
+            // // have not read nodes or edges, or not finished reading
+            throw invalid_input("Have not read nodes or edges, or not finished reading!"); 
         }
 
     } catch (invalid_input & e) {
@@ -174,13 +174,13 @@ void readGridMap(std::ifstream & input_file, Graph & graph) {
 
 
 // read obstacles
-/* at least two nodes per line, so at least one space per list
-*/
+// at least two nodes per line, so at least one space per list
 void readObsFunc(std::string line, Graph & graph, std::vector<std::vector<Node> > & obs)
 {
     size_t spacePos = line.find(" ");
     if (spacePos == line.npos) {
-        throw invalid_input(); // need at least two nodes per line
+        // need at least two nodes per line
+        throw invalid_input("It's required to have at least two nodes in each obstacles!"); 
     }
     
     std::vector<size_t> nodeIds = std::vector<size_t>();
@@ -213,7 +213,7 @@ void readObs(std::ifstream & input_file, Graph & graph, std::vector<std::vector<
                 continue;
             }
             else if (readObsStaus == 0 && line.find("$obstacles") == line.npos) {
-                throw invalid_input(); // no $obstacles
+                throw invalid_input("$obstacles"); 
             }
             else if (readObsStaus == 0 && line.find("$obstacles") != line.npos) {
                 readObsStaus++;
@@ -223,13 +223,14 @@ void readObs(std::ifstream & input_file, Graph & graph, std::vector<std::vector<
                 readObsFunc(line, graph, obs);
             }
             else {
-                throw invalid_input(); // unexpected input, for example, multiple $obstacles
+                throw invalid_input("There is unexpected input!"); 
+                // unexpected input, for example, multiple $obstacles
             }
         }
         readObsStaus++;
         // if #obstacles is not read, throw error
         if (readObsStaus != 2) {
-            throw invalid_input(); // have not read obstacles, or not finished reading
+            throw invalid_input("Have not read obstacles, or not finished reading");
         }
     } catch (invalid_input & e) {
         std::cerr << e.what() << std::endl;
@@ -276,13 +277,11 @@ void checkEdgeStillWork(Graph & graph, std::vector<Edge> & edgeObs, std::vector<
             // check if it's a obs edge
             if (std::find(edgeObs.begin(), edgeObs.end(), edge) != edgeObs.end()) {
                 graph.changeWeight(i, it->first, std::numeric_limits<double>::infinity());
-
             }
             else {
                 // check if it touch the obs
                 if (edge.touchObs(obs) || edge.intersectObs(pairObsVec)) {
                     graph.changeWeight(i, it->first, std::numeric_limits<double>::infinity());
-
                 }   
             }
         }
