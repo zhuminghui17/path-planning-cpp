@@ -40,6 +40,10 @@ int main(int argc, char **argv) {
     std::string endNodeId = argv[4];
 
     graph.dijkstra(std::stoi(startNodeId), std::stoi(endNodeId));
+
+    // print the adjacency list
+    std::cout << graph << std::endl;
+    
         
     gridmap.close();
     obstacles.close();
