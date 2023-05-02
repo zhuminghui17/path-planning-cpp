@@ -8,6 +8,17 @@
 #include <ostream>
 #include <vector>
 
+/*
+Node class
+    - represents a node in the graph
+    - stores the x and y coordinates of the node
+    - stores the node id
+    - calculates the distance from another node
+    - stores the slope from another node
+    - overloaded << operator to print the node
+    - overloaded == operator to compare two nodes
+*/
+
 class Node {
     private:
         double x, y;
@@ -22,6 +33,5 @@ class Node {
         bool operator==(const Node & rhs) const;
         double slopeFrom(const Node & rhs);
 };
-
 
 #endif

@@ -4,13 +4,30 @@
 #include <cstdlib>
 #include "node.hpp"
 #include <map>
+#include "exceptions.cpp"
+
+/*
+Graph class
+    - stores the nodes in the graph
+    - stores the adjacency list
+    - stores the number of nodes and edges
+    - addNode() adds a node to the graph
+    - addEdge() adds an edge between two nodes
+    - getNumNodes() returns the number of nodes in the graph
+    - getNumEdges() returns the number of edges in the graph
+    - getNodes() returns the vector of nodes in the graph
+    - initAdj() initializes the adjacency list
+    - operator<<() prints the graph
+    - getNode() returns the node with the given id
+    - getAdjSize() returns the size of the adjacency list
+    - getAdj() returns the adjacency list
+    - dijkstra() finds the shortest path between two nodes
+    - addOneObs() adds one obstacle to the graph
+    - changeWeight() changes the weight of an edge
+    - Astar() finds the shortest path between two nodes using A*
+*/
 
 class Graph {
-    /*
-    * A graph is a collection of nodes and edges.
-    * The nodes are stored in a vector.
-    * The edges are stored in an adjacency list.
-    */
     private:
         std::vector<Node> nodes;
         std::vector<std::map<size_t, double > > adj;
@@ -30,6 +47,7 @@ class Graph {
         std::vector<std::pair<Node, Node> > addOneObs(std::vector<Node> oneObs);
         void changeWeight(size_t firstNodeId, size_t secondNodeId, double newWeight);
         void Astar(size_t startNodeId, size_t endNodeId);
+        void checkNodeValid(size_t nodeId);
 };
 
 #endif

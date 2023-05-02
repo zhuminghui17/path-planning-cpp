@@ -6,76 +6,39 @@
 #include <iostream>
 #include <queue>
 
+// constructor
 Graph::Graph(): nodes(std::vector<Node>()), adj(std::vector<std::map<size_t, double> >()) {
 }
 
+// add a node to the graph
 void Graph::addNode(Node node) {
     nodes.push_back(node);
 }
 
-// void Graph::addEdge(size_t f, size_t s) {
-
-//     // if node f or s not in nodes, it's bug
-//     if (std::find(nodes.begin(), nodes.end(), f) == nodes.end() ||
-//         std::find(nodes.begin(), nodes.end(), s) == nodes.end()) {
-//         std::cerr << "Error: node not in nodes" << std::endl;
-//         exit(EXIT_FAILURE);
-//     }
-    
-//     // if f not in adj, add s to adj[f]
-//     if (adj.find(f) == adj.end()) {
-//         std::vector<size_t> v;
-//         v.push_back(s);
-//         adj[f] = v;
-//     }
-//     else {
-//         adj[f].push_back(s); // f in adj, add s to adj[f]
-//     }
-
-//     // if s not in adj, add f to adj[s]
-//     if (adj.find(s) == adj.end()) {
-//         std::vector<size_t> v;
-//         v.push_back(f);
-//         adj[s] = v;
-//     }
-//     else {
-//         adj[s].push_back(f); // s in adj, add f to adj[s]
-//     }
-// }
-
+// add an edge between two nodes
 void Graph::addEdge(size_t f, size_t s) {
-
-    if (f < 0 || s < 0 || f >= nodes.size() || s >= nodes.size()) {
-        std::cerr << "Error: node not in nodes" << std::endl;
-        exit(EXIT_FAILURE);
-    }
+    // check if the node id is valid
+    checkNodeValid(f);
+    checkNodeValid(s);
 
     // check if there is edge between f and s
-    if (adj[f].find(s) != adj[f].end()) {
-        return;
-    }
-
-    if (adj[s].find(f) != adj[s].end()) {
+    if (adj[f].find(s) != adj[f].end() || adj[s].find(f) != adj[s].end()) {
         return;
     }
 
     // map: key is f or s, value is the distance between f and s
-    // remember to initialize the the adj[] as empty map
-    
+    // remember to initialize the the adj[] as empty map    
     adj[f].insert(std::pair<size_t, double> (s, nodes[f].distanceFrom(nodes[s])));
     adj[s].insert(std::pair<size_t, double> (f, nodes[f].distanceFrom(nodes[s])));
-
 }
 
-
-
-
-
+// get the number of nodes in the graph
 size_t Graph::getNumNodes() {
     return nodes.size();
 }
-size_t Graph::getNumEdges() {
 
+// get the number of edges in the graph
+size_t Graph::getNumEdges() {
     size_t numEdges = 0;
     for (size_t i = 0; i < adj.size(); i++) {
         numEdges += adj[i].size();
@@ -83,10 +46,12 @@ size_t Graph::getNumEdges() {
     return numEdges / 2;
 }
 
+// get the vector of nodes in the graph
 std::vector<Node> Graph::getNodes() {
     return nodes;
 }
 
+// initialize the adjacency list
 void Graph::initAdj() {
     for (size_t i = 0; i < nodes.size(); i++) {
         std::map<size_t, double> m;
@@ -94,18 +59,30 @@ void Graph::initAdj() {
     }
 }
 
+// get the node with the given id
 Node Graph::getNode(size_t nodeId) {
+    // check if the node id is valid
+    checkNodeValid(nodeId);
+
     return nodes[nodeId];
 }
 
+// get the size of the adjacency list
 size_t Graph::getAdjSize() {
     return adj.size();
 }
 
+// get the adjacency list
 std::map<size_t, double> Graph::getAdj(size_t nodeId) {
+    // check if the node id is valid
+    checkNodeValid(nodeId);
+    // all the adjacency list is initialized in initAdj()
+    // so we don't need to check if the adj[nodeId] is empty
+
     return adj[nodeId];
 }
 
+// print the graph
 std::ostream & operator<<(std::ostream & os, Graph & rhs) {
     for (size_t i = 0; i < rhs.getNumNodes(); i++) {
         Node curNode = rhs.getNode(i);
@@ -290,3 +267,15 @@ void Graph::Astar(size_t startNodeId, size_t endNodeId) {
     std::cout << " : " << ghf[endNodeId][2] << std::endl;
 }
 
+
+void Graph::checkNodeValid(size_t nodeId) {
+    try {
+        if (nodeId < 0 || nodeId >= nodes.size()) {
+            throw invalid_node();
+        }
+    }
+    catch (invalid_node & e) {
+        std::cerr << e.what() << std::endl;
+        exit(EXIT_FAILURE);
+    }
+}

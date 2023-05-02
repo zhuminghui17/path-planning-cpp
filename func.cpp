@@ -9,45 +9,19 @@
 #include <sstream>
 #include <map>
 
-class invalid_input : public std::exception {
-    public:
-    const char *what() const throw() { return "Invalid Input Format"; };
-};
-
-void readNodesFunc(std::string line, Graph & graph) {
-    // nodeid, x, y
-    size_t firstSpacePos = line.find(" ");
-    std::string nodeId = line.substr(0, firstSpacePos);
-    size_t secondSpacePos = line.find(" ", firstSpacePos + 1);
-    std::string x = line.substr(firstSpacePos + 1, secondSpacePos - firstSpacePos - 1);
-    std::string y = line.substr(secondSpacePos + 1, line.length() - secondSpacePos - 1);
-
-    Node node = Node(std::stod(x), std::stod(y), std::stoi(nodeId));
-    graph.addNode(node);
-}
-
-void readEdgesFunc(std::string line, Graph  & graph)
-{
-    // nodeid, x, y
-    size_t firstSpacePos = line.find(" ");
-    std::string firstNodeId = line.substr(0, firstSpacePos);
-    std::string secondNodeId = line.substr(firstSpacePos + 1, line.length() - firstSpacePos - 1);
-    
-    // std::stoi(firstNodeId), std::stoi(secondNodeId));
-    graph.addEdge(std::stoi(firstNodeId), std::stoi(secondNodeId));
-}
-
+// check the argument count
 void checkArgc(int argc, int right) {
    if (argc != right) {
-        std::cerr << "Argument count is not correct!" << std::endl;
+        std::cerr << "Argument count is not correct! It should be " << right << "!" << std::endl;
         exit(EXIT_FAILURE);
     }
 }
 
+// check if the file can be opened
 void checkFileOpen(std::ifstream &input_file, std::string filename) {
     if (!input_file.is_open())
     {
-        std::cerr << "Could not open file " << filename << std::endl;
+        std::cerr << "Cannot open file " << filename << ", please check the file name or path is right!" << std::endl;
         exit(EXIT_FAILURE);
     }
 }
@@ -59,33 +33,112 @@ void checkFileClose(std::ifstream &input_file, std::string filename) {
     }
 }
 
+// check if the file is closed
+void checkOnlyNumeric(std::string line) {
+    try {
+        for (size_t i = 0; i < line.length(); i++) {
+            if (isalpha(line[i])) {
+                throw invalid_format();
+            }
+        }
+    }
+    catch (invalid_format & e) {
+        std::cerr << e.what() << std::endl;
+        exit(EXIT_FAILURE);
+    }
+}
+
+// read nodes and store in graph
+void readNodesFunc(std::string line, Graph & graph) {
+    //line: nodeId x y
+
+    // check no letter in the line
+    checkOnlyNumeric(line);
+
+    try {
+        size_t firstSpacePos = line.find(" ");
+        size_t secondSpacePos = line.find(" ", firstSpacePos + 1);
+        if (firstSpacePos == line.npos || secondSpacePos == line.npos) {
+            throw invalid_input();
+        }
+        std::string nodeId = line.substr(0, firstSpacePos);
+        std::string x = line.substr(firstSpacePos + 1, secondSpacePos - firstSpacePos - 1);
+        std::string y = line.substr(secondSpacePos + 1, line.length() - secondSpacePos - 1);
+
+        Node node = Node(std::stod(x), std::stod(y), std::stoi(nodeId));
+        graph.addNode(node);
+    } 
+    catch (invalid_input & e) {
+        std::cerr << e.what() << std::endl;
+        exit(EXIT_FAILURE);
+    }
+}
+
+// read edges and store in graph
+void readEdgesFunc(std::string line, Graph  & graph) {
+    // nodeid, x, y
+    // check no letter in the line
+    checkOnlyNumeric(line);
+    try {
+    size_t firstSpacePos = line.find(" ");
+    if (firstSpacePos == line.npos) {
+        throw invalid_input();
+    }
+    std::string firstNodeId = line.substr(0, firstSpacePos);
+    std::string secondNodeId = line.substr(firstSpacePos + 1, line.length() - firstSpacePos - 1);
+    graph.addEdge(std::stoi(firstNodeId), std::stoi(secondNodeId));
+    } catch (invalid_input & e) {
+        std::cerr << e.what() << std::endl;
+        exit(EXIT_FAILURE);
+    }    
+}
+
+// read nodes and edges
 void readGridMap(std::ifstream & input_file, Graph & graph) {
     // initialize line and conditional boolean
     std::string line;
-    int readNodes = 0;
-    int readEdges = 0;
+    int readNodesStatus = 0; // 0 = not read, 1 = reading, 2 = done
+    int readEdgesStatus = 0; // 0 = not read, 1 = reading, 2 = done
 
-    while (std::getline(input_file, line)) {
-        if (line.empty()) {
-            continue;
+    try {
+        while (std::getline(input_file, line)) {
+            // skipe empty line
+            if (line.empty()) {
+                continue;
+            }
+            // if #edges is before #nodes, throw error
+            else if (readNodesStatus == 0 && readEdgesStatus == 0 && line.find("$edges") != line.npos) {
+                throw invalid_input();
+            }
+            else if (readNodesStatus == 0 && readEdgesStatus == 0 && line.find("$nodes") != line.npos) {
+                readNodesStatus++;
+            }
+            else if (readNodesStatus == 1 && readEdgesStatus == 0 && line.find("$edges") == line.npos) {
+                readNodesFunc(line, graph);
+            }
+            else if (readNodesStatus == 1 && readEdgesStatus == 0 && line.find("$edges") != line.npos) {
+                readNodesStatus++;
+                readEdgesStatus++;
+                graph.initAdj();
+                continue;
+            }
+            else if (readNodesStatus == 2 && readEdgesStatus == 1 && line.find("$edges") == line.npos) {
+                readEdgesFunc(line, graph);
+            }
+            else {
+                throw invalid_input(); // unexpected input, for example, multiple $nodes
+            }
         }
-        else if (readNodes == 0 && line.find("$nodes") != line.npos) {
-            readNodes++;
-            continue;
+        readEdgesStatus++;
+        // if #nodes or #edges is not read, throw error
+        if (readNodesStatus != 2 || readEdgesStatus != 2) {
+            throw invalid_input(); // have not read nodes or edges, or not finished reading
         }
-        else if (readNodes == 1 && line.find("$edges") == line.npos) {
-            readNodesFunc(line, graph);
-        }
-        else if (readEdges == 0 && line.find("$edges") != line.npos) {
-            readNodes++;
-            readEdges++;
-            graph.initAdj();
-            continue;
-        }
-        else if (readEdges == 1 && line.find("$edges") == line.npos) {
-            readEdgesFunc(line, graph);
-        }
-    }
+
+    } catch (invalid_input & e) {
+        std::cerr << e.what() << std::endl;
+        exit(EXIT_FAILURE);
+    }   
 }
 
 
@@ -201,4 +254,5 @@ void checkEdgeStillWork(Graph & graph, std::vector<Edge> & edgeObs, std::vector<
     //     }
     // }
 }
+
 

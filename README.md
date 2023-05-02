@@ -50,3 +50,12 @@ addEdge要检查是否已经有edge
 ### step 4
 
 use a map to store g, h, (f)
+
+
+
+one testcase about invalid node ID (out of bound) when using graph.addEdge
+
+checkNode, 遍历一遍，检查下nodeID，和index
+
+
+one testcase about there is non-numeric in the line when reading graph

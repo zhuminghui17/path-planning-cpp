@@ -16,13 +16,14 @@ int main(int argc, char **argv)
     // check if file can be opened
     checkFileOpen(input_file, argv[1]);
     
-    // initialize graph and read nodes
+    // initialize graph and read nodes, and edges
     Graph graph = Graph();
-
     readGridMap(input_file, graph);
 
+    // print the graph
     std::cout << graph << std::endl;
     
+    // close the file
     input_file.close();
     checkFileClose(input_file, argv[1]);
 
