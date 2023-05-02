@@ -162,7 +162,7 @@ void Graph::dijkstra(size_t startNodeId, size_t endNodeId) {
 
 // If endNodeId was not reached, there is no path
 if (dist[endNodeId] == std::numeric_limits<double>::infinity()) {
-    std::cerr << "No path exists" << std::endl;
+    std::cerr << "\nNo path exists" << std::endl;
     exit(EXIT_FAILURE);
 
 } else {
@@ -176,7 +176,7 @@ if (dist[endNodeId] == std::numeric_limits<double>::infinity()) {
     path.push_back(startNodeId);
     std::reverse(path.begin(), path.end());
     double cost = dist[endNodeId];
-    std::cout << "Shortest path found: ";
+    std::cout << "\nShortest path found: ";
     for (size_t i = 0; i < path.size(); i++) {
         std::cout << path[i];
         if (i < path.size() - 1) {
@@ -293,12 +293,13 @@ void Graph::Astar(size_t startNodeId, size_t endNodeId) {
 
     // If endNodeId was not reached, there is no path
     if (ghf[endNodeId][2] == std::numeric_limits<double>::infinity()) {
-        std::cerr << "No path exists" << std::endl;
+        std::cerr << "\nNo path exists" << std::endl;
         exit(EXIT_FAILURE);
     }  else {
         // print out the final best path
         std::vector<size_t> path;
         size_t cur = endNodeId;
+        std::cout << "\nShortest path found: ";
         while (cur != startNodeId) {
             path.push_back(cur);
             cur = previous[cur];

@@ -33,6 +33,5 @@ class Edge {
         friend std::ostream & operator<<(std::ostream & os, Edge & rhs);
 };
 
-
 #endif // EDGE_HPP
 

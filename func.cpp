@@ -213,7 +213,7 @@ void readObs(std::ifstream & input_file, Graph & graph, std::vector<std::vector<
                 continue;
             }
             else if (readObsStaus == 0 && line.find("$obstacles") == line.npos) {
-                throw invalid_input("$obstacles"); 
+                throw invalid_input("no $obstacles header"); 
             }
             else if (readObsStaus == 0 && line.find("$obstacles") != line.npos) {
                 readObsStaus++;
