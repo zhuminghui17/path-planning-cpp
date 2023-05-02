@@ -53,6 +53,13 @@ int main(int argc, char **argv) {
     std::string startNodeId = argv[optind + 2];
     std::string endNodeId = argv[optind + 3];
 
+    // check if the start node and end node are able to be int
+    checkOnlyInt(startNodeId);
+    checkOnlyInt(endNodeId);
+    // check if the start node and end node are in the graph
+    graph.checkNodeValid(std::stoi(startNodeId));
+    graph.checkNodeValid(std::stoi(endNodeId));
+
     if (use_astar) {
         std::cout << "Using A* algorithm" << std::endl;
         graph.Astar(std::stoi(startNodeId), std::stoi(endNodeId));

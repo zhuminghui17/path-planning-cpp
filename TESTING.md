@@ -1,6 +1,5 @@
 path_planning
 
-
 # Step 1
 
 1. Run `./path-step1 data/gridmap/sample_input.txt` 
@@ -170,39 +169,184 @@ The test case examine that the program works if the nodes may be listed in any o
 
 # Step 2
 1. Run `./path-step2 data/gridmap/sample_input.txt 0 23`
+The output should be
+```
+New best path found: 0 1 : 0.5
+New best path found: 0 6 : 0.4
+New best path found: 0 7 : 0.640312
+New best path found: 0 1 2 : 1
+New best path found: 0 1 8 : 1.14031
+New best path found: 0 1 2 3 : 1.5
+New best path found: 0 1 2 9 : 1.64031
+New best path found: 0 1 2 3 4 : 2
+New best path found: 0 1 2 3 10 : 2.14031
+New best path found: 0 1 2 3 4 5 : 2.5
+New best path found: 0 1 2 3 4 11 : 2.64031
+New best path found: 0 6 12 : 0.8
+New best path found: 0 6 13 : 1.04031
+New best path found: 0 7 14 : 1.28062
+New best path found: 0 1 8 15 : 1.78062
+New best path found: 0 1 2 9 16 : 2.28062
+New best path found: 0 1 2 3 10 17 : 2.78062
+New best path found: 0 6 12 18 : 1.2
+New best path found: 0 6 12 19 : 1.44031
+New best path found: 0 6 13 20 : 1.68062
+New best path found: 0 7 14 21 : 1.92094
+New best path found: 0 1 8 15 22 : 2.42094
+New best path found: 0 1 2 9 16 23 : 2.92094
+Shortest path found: 0 1 2 9 16 23 : 2.92094
+```
+It correctly run the Dijkstra's algorithm. It will print the new best path found each time and finally print the shortest path found between the start and goal points and the cost. 
 
 
-2. Run `./path-step2 data/gridmap/sample_input.txt 0 `
+2. Run `./path-step2 data/gridmap/sample_input.txt 0`
 The output should be
 ```
 Argument count is not correct! It should be 4!
 ```
 Because step2 program read in the gridmap file and read the start and goal nodeIds. Altogether the argument count is 4. 
 
-3. one testcase about check input start id is not int
+3. Run `./path-step2 data/gridmap/sample_input.txt a 23`
+The output should be
+```
+Invalid Input.
+```
+This is one testcase to check if it will report error if the start-point-id is not `int`.
 
-4. one testcase about check input goal id is not int
+4. Run `./path-step2 data/gridmap/sample_input.txt 0 a`
+The output should be
+```
+Invalid Input.
+```
+This is one testcase to check if it will report error if the goal-point-id is not `int`.
 
-5. one testcase about check input start id is not on the graph
+5. Run `./path-step2 data/gridmap/sample_input.txt -1 23`
+The output should be
+```
+Invalid node. Please check the nodeId.
+```
+This is one testcase to check if it will report error if the start-point-id is not valid (not in graph)
 
-6. ne testcase about check input goal id is not on the graph
+6. Run `./path-step2 data/gridmap/sample_input.txt 0 24`
+The output should be
+```
+Invalid node. Please check the nodeId.
+```
+This is one testcase to check if it will report error if the goal-point-id is not valid (not in graph)
 
-7. one testcase about no path (it should print it out) No path exists"
-and exit with a failure status. 
+7. Run `./path-step2 data/gridmap/sample_input.txt 0.5 23`
+The output should be
+```
+Invalid Input.
+```
+This is one testcase to check if it will report error if the start-point-id is not `int` (it's a double).
 
-8. one testcase about if there are multiple paths with the lowest cost, choose the one to the node with the smallest node ID. 
+8. Run `./path-step2 data/gridmap/sample_input.txt 0 23.3`
+The output should be
+```
+Invalid Input.
+```
+This is one testcase to check if it will report error if the goal-point-id is not `int` (it's a double).
 
-double in the int field
+9. Run `./path-step2 data/gridmap/bugmap_s2_9.txt 0 6`
+The output should be
+```
+New best path found: 0 1 : 1
+New best path found: 0 2 : 2.91548
+New best path found: 0 3 : 1.11803
+No path exists
+```
+This is one testcase to check if it will print "No path exists" and exit with a failure status if there is no path between the start point and end point. It print the new best path it found each time and stop and exit and print "No path exists".
+
+10. Run `./path-step2 data/gridmap/goodmap3.txt 0 3`
+The output should be
+```
+New best path found: 0 1 : 1
+New best path found: 0 2 : 1
+New best path found: 0 1 3 : 2
+Shortest path found: 0 1 3 : 2
+```
+This is one testcase to check if there are multiple paths with the lowest cost, the algorithm will choose the one to the node with the smallest node ID. In my setting, nodes 0,1,2,3 make a square. the path from 0 to 3: 0 1 3 or 0 2 3, has the same cost. The algorithm choose the one with smallest node ID.
 
 
 # Step 3
-1. about agrc
-2. missing "$obstacles" 
-3. for one of a line, one point in obs
-4. include invalid obstacles
-5. "$obstacles" more than once?
-6. no path availble with if all path is inf
+1. Run `./path-step3 data/gridmap/sample_input.txt data/obs/sample_obs.txt 0 23`
+the output should be
+```
+New best path found: 0 1 : 0.5
+New best path found: 0 6 : 0.4
+New best path found: 0 7 : 0.640312
+New best path found: 0 1 8 : 1.14031
+New best path found: 0 6 12 : 0.8
+New best path found: 0 6 13 : 1.04031
+New best path found: 0 6 12 18 : 1.2
+New best path found: 0 6 12 19 : 1.44031
+New best path found: 0 6 13 20 : 1.68062
+New best path found: 0 6 13 20 15 : 2.32094
+New best path found: 0 6 13 20 21 : 2.18062
+New best path found: 0 6 13 20 15 10 : 2.96125
+New best path found: 0 6 13 20 15 16 : 2.82094
+New best path found: 0 6 13 20 15 22 : 2.96125
+New best path found: 0 6 13 20 15 10 3 : 3.60156
+New best path found: 0 6 13 20 15 10 4 : 3.36125
+New best path found: 0 6 13 20 15 10 5 : 3.60156
+New best path found: 0 6 13 20 15 10 11 : 3.46125
+New best path found: 0 6 13 20 15 10 17 : 3.60156
+New best path found: 0 6 13 20 15 16 17 : 3.32094
+New best path found: 0 6 13 20 15 16 23 : 3.46125
+New best path found: 0 6 13 20 21 22 : 2.68062
+New best path found: 0 6 13 20 21 22 23 : 3.18062
+Shortest path found: 0 6 13 20 21 22 23 : 3.18062
+```
+This is the correct one with the sample gridmap and obstacles files. 
+
+2. Run `./path-step3 data/gridmap/sample_input.txt data/obs/sample_obs.txt 0`
+The output should be 
+```
+Argument count is not correct! It should be 5!
+```
+Because step2 program read in the gridmap file, the obstacle file, and read the start and goal nodeIds. Altogether the argument count is 5. 
+
+3. Run `./path-step3 data/gridmap/sample_input.txt data/obs/bugobs_s3_3.txt 0 23`
+The output should be
+```
+Invalid Input.
+```
+one test case about reading obstacles: no $obstacles header
+
+4. Run `./path-step3 data/gridmap/sample_input.txt data/obs/bugobs_s3_4.txt 0 23`
+The output should be
+```
+Invalid Input.
+```
+the nodes in one line should be at least two to form an obstacle. this test case fail as there is only one. 
+
+5. Run `./path-step3 data/gridmap/sample_input.txt data/obs/bugobs_s3_5.txt 0 23`
+The output should be
+```
+Invalid Input.
+```
+include invalid obstacles (non-int: character)
+
+6. Run `./path-step3 data/gridmap/sample_input.txt data/obs/bugobs_s3_6.txt 0 23`
+The output should be
+```
+Invalid Input.
+```
+include invalid obstacles (non-int: double)
+
+7.Run `./path-step3 data/gridmap/sample_input.txt data/obs/bugobs_s3_7.txt 0 23`
+The output should be
+```
+Invalid node. Please check the nodeId.
+```
+include invalid obstacles (the nodeId is not in the graph)
+
+8. no path availble with if all path is inf
 
 
 TODO:
 
+check the case zero nodes and zero edges and zero obstcales
+
+5. "$obstacles" more than once?

@@ -39,12 +39,15 @@ int main(int argc, char **argv) {
     std::string startNodeId = argv[3];
     std::string endNodeId = argv[4];
 
-    graph.dijkstra(std::stoi(startNodeId), std::stoi(endNodeId));
+    // check if the start node and end node are able to be int
+    checkOnlyInt(startNodeId);
+    checkOnlyInt(endNodeId);
+    // check if the start node and end node are in the graph
+    graph.checkNodeValid(std::stoi(startNodeId));
+    graph.checkNodeValid(std::stoi(endNodeId));
 
-    // print the adjacency list
-    std::cout << graph << std::endl;
-    
-        
+    graph.dijkstra(std::stoi(startNodeId), std::stoi(endNodeId));
+            
     gridmap.close();
     obstacles.close();
     checkFileClose(gridmap, argv[1]);

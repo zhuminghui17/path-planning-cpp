@@ -33,11 +33,26 @@ void checkFileClose(std::ifstream &input_file, std::string filename) {
     }
 }
 
-// check if the file is closed
+// check the input is only numeric
 void checkOnlyNumeric(std::string line) {
     try {
         for (size_t i = 0; i < line.length(); i++) {
             if (isalpha(line[i])) {
+                throw invalid_input();
+            }
+        }
+    }
+    catch (invalid_input & e) {
+        std::cerr << e.what() << std::endl;
+        exit(EXIT_FAILURE);
+    }
+}
+
+// check the input is only int
+void checkOnlyInt(std::string line) {
+    try {
+        for (size_t i = 0; i < line.length(); i++) {
+            if (isalpha(line[i]) || line[i] == '.') {
                 throw invalid_input();
             }
         }
@@ -193,21 +208,36 @@ void readObsFunc(std::string line, Graph & graph, std::vector<std::vector<Node> 
 void readObs(std::ifstream & input_file, Graph & graph, std::vector<std::vector<Node> > & obs) {
     // initialize line and conditional boolean
     std::string line;
-    int readObs = 0;
+    int readObsStaus = 0; // 0 = not read, 1 = reading, 2 = done
     
-    while (std::getline(input_file, line)) {
-        if (line.empty()) {
-            continue;
+    try {
+        while (std::getline(input_file, line)) {
+            if (line.empty()) { // skip empty line
+                continue;
+            }
+            else if (readObsStaus == 0 && line.find("$obstacles") == line.npos) {
+                throw invalid_input(); // no $obstacles
+            }
+            else if (readObsStaus == 0 && line.find("$obstacles") != line.npos) {
+                readObsStaus++;
+                continue;
+            }
+            else if (readObsStaus == 1 && line.find("$obstacles") == line.npos) {
+                readObsFunc(line, graph, obs);
+            }
+            else {
+                throw invalid_input(); // unexpected input, for example, multiple $obstacles
+            }
         }
-        else if (readObs == 0 && line.find("$obstacles") != line.npos) {
-            readObs++;
-            continue;
+        readObsStaus++;
+        // if #obstacles is not read, throw error
+        if (readObsStaus != 2) {
+            throw invalid_input(); // have not read obstacles, or not finished reading
         }
-        else if (readObs == 1 && line.find("$obstacles") == line.npos) {
-            readObsFunc(line, graph, obs);
-        } 
+    } catch (invalid_input & e) {
+        std::cerr << e.what() << std::endl;
+        exit(EXIT_FAILURE);
     }
-    // std::cout << "obs size: " << obs.size() << std::endl;
 }
 
 void addEdgeForObs(std::vector<std::vector<Node> > obs, Graph & graph,

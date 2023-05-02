@@ -162,7 +162,9 @@ void Graph::dijkstra(size_t startNodeId, size_t endNodeId) {
 
 // If endNodeId was not reached, there is no path
 if (dist[endNodeId] == std::numeric_limits<double>::infinity()) {
-    std::cout << "No path found" << std::endl;
+    std::cerr << "No path exists" << std::endl;
+    exit(EXIT_FAILURE);
+
 } else {
     // print out the final best path
     std::vector<size_t> path;
@@ -291,7 +293,8 @@ void Graph::Astar(size_t startNodeId, size_t endNodeId) {
 
     // If endNodeId was not reached, there is no path
     if (ghf[endNodeId][2] == std::numeric_limits<double>::infinity()) {
-        std::cout << "No path found" << std::endl;
+        std::cerr << "No path exists" << std::endl;
+        exit(EXIT_FAILURE);
     }  else {
         // print out the final best path
         std::vector<size_t> path;
