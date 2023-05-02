@@ -1,6 +1,7 @@
 #include "node.hpp"
 #include "graph.hpp"
 #include "edge.hpp"
+#include "exceptions.hpp"
 #include <fstream>
 #include <iostream>
 #include <vector>

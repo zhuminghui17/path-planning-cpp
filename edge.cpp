@@ -1,16 +1,16 @@
 #include "edge.hpp"
 
+// constructor using initialization list
 Edge::Edge(Node start, Node end): start(start), end(end) {
 }
 
+// get weight of the edge
 double Edge::getweight() {
     return start.distanceFrom(end);
 }
 
-//make a node operator=
-
+// check if two edges intersect
 bool Edge::checkIntersect(Edge & e) {
-    // check if two edges intersect
     // if intersect, return true
     // else return false
     // if two edges have same start or end, return false
@@ -50,20 +50,21 @@ bool Edge::checkIntersect(Edge & e) {
             }
         }
     }
-
     return false;
 }
 
+// get start node
 Node Edge::getStart() {
     return start;
 }
 
+// get end node
 Node Edge::getEnd() {
     return end;
 }
 
+// check if edge touch any obstacle
 bool Edge::touchObs(std::vector<std::vector<Node> > allObs) {
-    // check if edge touch any obstacle
     // if touch, return true
     // else return false
     for (size_t i = 0; i < allObs.size(); i++) {
@@ -76,8 +77,8 @@ bool Edge::touchObs(std::vector<std::vector<Node> > allObs) {
     return false;
 }
 
+// check if edge intersect any obstacle
 bool Edge::intersectObs(std::vector<std::vector<std::pair<Node, Node> > >pairObsVec) {
-    // check if edge intersect any obstacle
     // if intersect, return true
     // else return false
     for (size_t i = 0; i < pairObsVec.size(); i++) {
@@ -91,10 +92,12 @@ bool Edge::intersectObs(std::vector<std::vector<std::pair<Node, Node> > >pairObs
     return false;
 }
 
+// overloaded == operator to compare two edges
 bool Edge::operator==(const Edge & e) const {
     return (start == e.start && end == e.end) || (start == e.end && end == e.start);
 }
 
+// overloaded << operator to print the edge
 std::ostream & operator<<(std::ostream & os, Edge & rhs) {
     os << rhs.start << "->" << rhs.end;
     return os;

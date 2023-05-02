@@ -320,10 +320,10 @@ void Graph::Astar(size_t startNodeId, size_t endNodeId) {
 void Graph::checkNodeValid(size_t nodeId) {
     try {
         if (nodeId < 0 || nodeId >= nodes.size()) {
-            throw invalid_node();
+            throw invalid_input();
         }
     }
-    catch (invalid_node & e) {
+    catch (invalid_input & e) {
         std::cerr << e.what() << std::endl;
         exit(EXIT_FAILURE);
     }

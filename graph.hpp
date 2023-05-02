@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include "node.hpp"
 #include <map>
-#include "exceptions.cpp"
+#include "exceptions.hpp"
 
 /*
 Graph class
@@ -25,6 +25,8 @@ Graph class
     - addOneObs() adds one obstacle to the graph
     - changeWeight() changes the weight of an edge
     - Astar() finds the shortest path between two nodes using A*
+    - checkNodeValid() checks if the node is in the graph
+    - checkNodes() checks if all the nodes in the graph are valid
 */
 
 class Graph {

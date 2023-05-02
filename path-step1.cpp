@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include "func.cpp"
+#include "exceptions.hpp"
 
 // read the nodes in the file
 int main(int argc, char **argv)

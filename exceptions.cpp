@@ -1,23 +1,12 @@
-#include <exception>
+#include "exceptions.hpp"
 
-class invalid_input : public std::exception{
-  public:
-    const char * what() const throw(){
-        return "Invalid Input.\n";
-    }
-};
+// default constructor
+invalid_input::invalid_input() : error("Invalid input") {}
 
-class invalid_node : public std::exception{
-  public:
-    const char * what() const throw(){
-        return "Invalid node. Please check the nodeId.\n";
-    }
-};
+// constructor with message
+invalid_input::invalid_input(std::string msg) : error(msg) {}
 
-// class invalid_format : public std::exception{
-//   public:
-//     const char * what() const throw(){
-//         return "Invalid format. Please check the format.\n";
-//     }
-// };
-
+// return the error message
+const char * invalid_input::what() const throw() {
+    return error.c_str();
+}
