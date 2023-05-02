@@ -184,19 +184,15 @@ void readObsFunc(std::string line, Graph & graph, std::vector<std::vector<Node> 
     
     std::vector<size_t> nodeIds = std::vector<size_t>();
 
-    std::string nodeId = line.substr(0, spacePos); // first node
-    nodeIds.push_back(std::stoi(nodeId)); // add first node
-    
-    size_t newSpacePos = line.find(" ",spacePos + 1); // find second space
-    while (newSpacePos != line.npos) { // while there are still spaces
-        nodeId = line.substr(spacePos + 1, line.length() - newSpacePos); // get next node
-        nodeIds.push_back(std::stoi(nodeId));   // add next node
-        // has a bug below, can not use line to find next space, because line is not updated
-        std::string following = line.substr(spacePos + 1);
-        spacePos = newSpacePos;
-        newSpacePos = following.find(" ");
-        // spacePos = line.find(" ",spacePos + 1); // find next space
+    // use split to get the nodeIds
+    std::stringstream ss(line);
+    std::string nodeId;
+    while (ss >> nodeId) {
+        checkOnlyInt(nodeId);
+        nodeIds.push_back(std::stoi(nodeId));
     }
+    // I delete the method with finding space and substr, because it's not efficient
+
     std::vector<Node> oneObs = std::vector<Node>();
     for (size_t i = 0; i < nodeIds.size(); i++) {
         oneObs.push_back(graph.getNode(nodeIds[i])); // add node to obs
@@ -275,17 +271,17 @@ void checkEdgeStillWork(Graph & graph, std::vector<Edge> & edgeObs, std::vector<
         std::map<size_t, double> adj = graph.getAdj(i); // key value
         for (std::map<size_t, double>::iterator it = adj.begin(); it != adj.end(); ++it) {
             Edge edge = Edge(graph.getNode(i), graph.getNode(it->first));
-            // print edge
-            // std::cout << edge << std::endl;
 
             // check if it's a obs edge
             if (std::find(edgeObs.begin(), edgeObs.end(), edge) != edgeObs.end()) {
                 graph.changeWeight(i, it->first, std::numeric_limits<double>::infinity());
+
             }
             else {
                 // check if it touch the obs
                 if (edge.touchObs(obs) || edge.intersectObs(pairObsVec)) {
                     graph.changeWeight(i, it->first, std::numeric_limits<double>::infinity());
+
                 }   
             }
         }

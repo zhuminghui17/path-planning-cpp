@@ -29,12 +29,25 @@ int main(int argc, char **argv) {
     std::vector<std::vector<Node> > obs = std::vector<std::vector<Node> >();
     readObs(obstacles, graph, obs);
 
+    // print the obs
+    // std::cout << "obs: " << std::endl;
+    // for (size_t i = 0; i < obs.size(); i++) {
+    //     for (size_t j = 0; j < obs[i].size(); j++) {
+    //         std::cout << obs[i][j] << " ";
+    //     }
+    //     std::cout << std::endl;
+    // }
+
+
     std::vector<std::vector<std::pair<Node, Node> > > pairObsVec = std::vector<std::vector<std::pair<Node, Node> > >();
     std::vector<Edge> edgeObs = std::vector<Edge>();
 
     addEdgeForObs(obs, graph, pairObsVec, edgeObs);
 
     checkEdgeStillWork(graph, edgeObs, pairObsVec, obs);
+
+    // print the graph
+    // std::cout << graph << std::endl;
 
     std::string startNodeId = argv[3];
     std::string endNodeId = argv[4];
