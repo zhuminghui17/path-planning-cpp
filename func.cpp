@@ -100,7 +100,7 @@ void readNodesFunc(std::string line, Graph & graph) {
 void readEdgesFunc(std::string line, Graph  & graph) {
     // nodeid, x, y
     // check no letter in the line
-    checkOnlyNumeric(line);
+    checkOnlyInt(line);
     try {
     size_t firstSpacePos = line.find(" ");
     if (firstSpacePos == line.npos) {

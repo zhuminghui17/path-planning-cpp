@@ -101,14 +101,14 @@ The output should be
 ```
 Invalid Input.
 ```
-Because stod have bugs in reading nodes
+Because having bugs in reading nodes, charcter in reading nodes. 
 
 12. Run `./path-step1 data/gridmap/bugmap_s1_12.txt`
 The output should be
 ```
 Invalid Input.
 ```
-Because stoi have bugs in reading nodes
+Because having bugs in reading nodes, double in edge
 
 13. Run `./path-step1 data/gridmap/bugmap_s1_13.txt`
 The output should be
@@ -429,10 +429,56 @@ No path exists
 This is a testcase to check if there is no path available (the only path is intersected with the obs) it should print "No path exists" and exit.
 
 
+# Step 4
+1. Run `./path-step4 -a data/gridmap/sample_input.txt data/obs/sample_obs.txt 0 23`
+The output should be
+```
+Using A* algorithm
+New best path found: 0 1 : 2.83238
+New best path found: 0 6 : 3.02488
+New best path found: 0 7 : 2.79438
+New best path found: 0 7 8 : 2.84031
+New best path found: 0 7 12 : 3.81242
+New best path found: 0 7 13 : 3.07992
+New best path found: 0 6 12 : 3.3318
+New best path found: 0 7 13 18 : 4.18062
+New best path found: 0 7 13 19 : 3.44031
+New best path found: 0 7 13 20 : 3.18062
+New best path found: 0 7 13 20 15 : 3.39797
+New best path found: 0 7 13 20 21 : 3.18062
+New best path found: 0 7 13 20 21 16 : 3.46125
+New best path found: 0 7 13 20 21 22 : 3.18062
+New best path found: 0 7 13 20 21 22 17 : 3.72094
+New best path found: 0 7 13 20 21 22 23 : 3.18062
+0 7 13 20 21 22 23 : 3.18062
+```
 
-
-TODO:
-
-check the case zero nodes and zero edges and zero obstcales
-
-5. "$obstacles" more than once?
+2. 1. Run `./path-step4 data/gridmap/sample_input.txt data/obs/sample_obs.txt 0 23`
+The output should be
+```
+Using Dijkstra's algorithm
+New best path found: 0 1 : 0.5
+New best path found: 0 6 : 0.4
+New best path found: 0 7 : 0.640312
+New best path found: 0 1 8 : 1.14031
+New best path found: 0 6 12 : 0.8
+New best path found: 0 6 13 : 1.04031
+New best path found: 0 6 12 18 : 1.2
+New best path found: 0 6 12 19 : 1.44031
+New best path found: 0 6 13 20 : 1.68062
+New best path found: 0 6 13 20 15 : 2.32094
+New best path found: 0 6 13 20 21 : 2.18062
+New best path found: 0 6 13 20 15 10 : 2.96125
+New best path found: 0 6 13 20 15 16 : 2.82094
+New best path found: 0 6 13 20 15 22 : 2.96125
+New best path found: 0 6 13 20 15 10 3 : 3.60156
+New best path found: 0 6 13 20 15 10 4 : 3.36125
+New best path found: 0 6 13 20 15 10 5 : 3.60156
+New best path found: 0 6 13 20 15 10 11 : 3.46125
+New best path found: 0 6 13 20 15 10 17 : 3.60156
+New best path found: 0 6 13 20 15 16 17 : 3.32094
+New best path found: 0 6 13 20 15 16 23 : 3.46125
+New best path found: 0 6 13 20 21 22 : 2.68062
+New best path found: 0 6 13 20 21 22 23 : 3.18062
+Shortest path found: 0 6 13 20 21 22 23 : 3.18062
+```
