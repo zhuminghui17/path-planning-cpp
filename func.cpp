@@ -38,11 +38,11 @@ void checkOnlyNumeric(std::string line) {
     try {
         for (size_t i = 0; i < line.length(); i++) {
             if (isalpha(line[i])) {
-                throw invalid_format();
+                throw invalid_input();
             }
         }
     }
-    catch (invalid_format & e) {
+    catch (invalid_input & e) {
         std::cerr << e.what() << std::endl;
         exit(EXIT_FAILURE);
     }
@@ -63,6 +63,13 @@ void readNodesFunc(std::string line, Graph & graph) {
         }
         std::string nodeId = line.substr(0, firstSpacePos);
         std::string x = line.substr(firstSpacePos + 1, secondSpacePos - firstSpacePos - 1);
+
+        size_t thirdSpacePos = line.find(" ", secondSpacePos + 1); // third space if exist
+        
+        if (thirdSpacePos != line.npos) { // avoid more input in the lines
+            throw invalid_input();
+        }
+
         std::string y = line.substr(secondSpacePos + 1, line.length() - secondSpacePos - 1);
 
         Node node = Node(std::stod(x), std::stod(y), std::stoi(nodeId));
@@ -84,6 +91,13 @@ void readEdgesFunc(std::string line, Graph  & graph) {
     if (firstSpacePos == line.npos) {
         throw invalid_input();
     }
+
+    size_t secondSpacePos = line.find(" ", firstSpacePos + 1); // third space if exist
+    
+    if (secondSpacePos != line.npos) { // avoid more input in the lines
+        throw invalid_input();
+    }
+    
     std::string firstNodeId = line.substr(0, firstSpacePos);
     std::string secondNodeId = line.substr(firstSpacePos + 1, line.length() - firstSpacePos - 1);
     graph.addEdge(std::stoi(firstNodeId), std::stoi(secondNodeId));
@@ -130,6 +144,7 @@ void readGridMap(std::ifstream & input_file, Graph & graph) {
             }
         }
         readEdgesStatus++;
+        graph.checkNodes();
         // if #nodes or #edges is not read, throw error
         if (readNodesStatus != 2 || readEdgesStatus != 2) {
             throw invalid_input(); // have not read nodes or edges, or not finished reading

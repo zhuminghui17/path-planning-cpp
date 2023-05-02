@@ -59,3 +59,13 @@ checkNode, 遍历一遍，检查下nodeID，和index
 
 
 one testcase about there is non-numeric in the line when reading graph
+
+
+check if some points overlap
+
+check some invalid numbers
+
+
+check if some points already have
+
+after add nodes, check and sort because the it should work well

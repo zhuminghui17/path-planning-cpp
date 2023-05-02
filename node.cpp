@@ -42,5 +42,7 @@ double Node::slopeFrom(const Node & rhs) {
     return (y - rhs.y) / (x - rhs.x);
 }
 
+
+
 #endif 
 

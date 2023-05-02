@@ -47,38 +47,125 @@ Cannot open file data/gridmap/fake_input.txt, please check the file name or path
 ```
 Because it's a non-existing fake file. 
 
-4. 
-one test case about their is non-numeric in reading nodes
+4. Run `./path-step1 data/gridmap/bugmap_s1_4.txt`
+The output should be
+```
+Invalid format. Please check the format.
+```
+Because there is non-numeric in reading nodes (O in line 2).
 
-5. 
-one test case about their is non-numeric in reading nodes
+5. Run `./path-step1 data/gridmap/bugmap_s1_5.txt`
+The output should be
+```
+Invalid format. Please check the format.
+```
+Because there is non-numeric in reading edges (I in line 9).
 
-6. 
-one test case about miss one space in reading nodes
+6. Run `./path-step1 data/gridmap/bugmap_s1_6.txt`
+The output should be
+```
+Invalid Input.
+```
+Because missing one space in reading nodes.
 
-7. 
-one test case about missing two space in reading nodes
+7. Run `./path-step1 data/gridmap/bugmap_s1_7.txt`
+The output should be
+```
+Invalid Input.
+```
+Because missing two spaces in reading nodes.
 
-8. 
-one test case about missing one space in reading edges
+8. Run `./path-step1 data/gridmap/bugmap_s1_8.txt`
+The output should be
+```
+Invalid Input.
+```
+Because missing one nodes in reading edges. 
 
-9. 
+9. Run `./path-step1 data/gridmap/bugmap_s1_9.txt`
+The output should be
+```
+Invalid Input.
+```
+Because there is more items in reading one line of nodes than required.
+
+10. Run `./path-step1 data/gridmap/bugmap_s1_10.txt`
+The output should be
+```
+Invalid Input.
+```
+Because there is more items in reading one line of edges than required.
+
+
+11. Run `./path-step1 data/gridmap/bugmap_s1_11.txt`
+The output should be
+```
+Invalid Input.
+```
+Because stod have bugs in reading nodes
+
+12. Run `./path-step1 data/gridmap/bugmap_s1_12.txt`
+The output should be
+```
+Invalid Input.
+```
+Because stoi have bugs in reading nodes
+
+13. Run `./path-step1 data/gridmap/bugmap_s1_13.txt`
+The output should be
+```
+Invalid Input.
+```
 one test case about reading gridmap: $edges is above $nodes
 
-10. 
+14. Run `./path-step1 data/gridmap/bugmap_s1_14.txt`
+The output should be
+```
+Invalid Input.
+```
 one test case about reading gridmap: no $nodes
 
-11. 
+15. Run `./path-step1 data/gridmap/bugmap_s1_15.txt`
+The output should be
+```
+Invalid Input.
+```
 one test case about reading gridmap: no $edges
 
-12. 
+16. Run `./path-step1 data/gridmap/bugmap_s1_16.txt`
+The output should be
+```
+Invalid Input.
+```
 one test case about reading gridmap: more than one "$nodes"
  
-13. 
+17. Run `./path-step1 data/gridmap/bugmap_s1_17.txt`
+The output should be
+```
+Invalid Input.
+```
 one test case about reading gridmap: more than one "$edges"
 
-14. 
-one test case about reading gridmap: unexpected input TBD
+18. 
+Run `./path-step1 data/gridmap/bugmap_s1_18.txt`
+The output should be
+```
+Invalid Input.
+```
+Because the test cases have missing Node with nodeId 6 but have Node with nodeId 7.
 
+19. 
+Run `./path-step1 data/gridmap/goodmap2.txt`
+The output should be
+```
+(2.5,0) (0.5,0) (1,0) (1.5,0) (2,0) (0,0) 
+0: 1,0.5 3,1.5 4,2 
+1: 0,0.5 2,0.5 5,2 
+2: 1,0.5 3,0.5 4,1 
+3: 0,1.5 2,0.5 5,1 
+4: 0,2 2,1 5,0.5 
+5: 1,2 3,1 4,0.5 
+```
+The test case examine that the program works if the nodes may be listed in any order without any gap in numbering.
 
 # Step 2

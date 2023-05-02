@@ -32,6 +32,7 @@ class Node {
         friend std::ostream & operator<<(std::ostream & os, Node & rhs);
         bool operator==(const Node & rhs) const;
         double slopeFrom(const Node & rhs);
+
 };
 
 #endif

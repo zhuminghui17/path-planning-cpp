@@ -279,3 +279,27 @@ void Graph::checkNodeValid(size_t nodeId) {
         exit(EXIT_FAILURE);
     }
 }
+
+bool compareNodeId(Node & a, Node & b) {
+    return a.getNodeId() < b.getNodeId();
+}
+
+
+void Graph::checkNodes() {
+    // sort the nodes vector by nodeId, from small to large
+    std::sort(nodes.begin(), nodes.end(), compareNodeId);
+    try {
+        // iterate through the nodes vector, if the node id is not consecutive, throw invalid_input
+        for (size_t i = 0; i < nodes.size(); i++) {
+            if (nodes[i].getNodeId() != i) {
+                throw invalid_input();
+            }
+        }
+    }
+    catch (invalid_input & e) {
+        std::cerr << e.what() << std::endl;
+        exit(EXIT_FAILURE);
+    }
+}
+
+

@@ -14,10 +14,10 @@ class invalid_node : public std::exception{
     }
 };
 
-class invalid_format : public std::exception{
-  public:
-    const char * what() const throw(){
-        return "Invalid format. Please check the format.\n";
-    }
-};
+// class invalid_format : public std::exception{
+//   public:
+//     const char * what() const throw(){
+//         return "Invalid format. Please check the format.\n";
+//     }
+// };
 

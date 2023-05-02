@@ -48,6 +48,7 @@ class Graph {
         void changeWeight(size_t firstNodeId, size_t secondNodeId, double newWeight);
         void Astar(size_t startNodeId, size_t endNodeId);
         void checkNodeValid(size_t nodeId);
+        void checkNodes();
 };
 
 #endif
